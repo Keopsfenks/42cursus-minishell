@@ -1,7 +1,3 @@
-//
-// Created by furkan can on 26.08.2023.
-//
-
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
