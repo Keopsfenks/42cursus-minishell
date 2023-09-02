@@ -58,43 +58,43 @@ void	*insert_with_quotation(t_arg *tmp, char *str)
 	return ((void *)1);
 }
 
-void	*quotation_counter(t_arg *tmp)
+void	*quotation_counter(void)
 {
 	int	i;
 	int	quot_size;
-	int	quot_size2;
 
 	i = 0;
 	quot_size = 0;
-	quot_size2 = 0;
 	while (g_data->line[i] != '\0')
 	{
-		if (g_data->line[i] == '\"')
+		if (g_data->line[i] == '\"' || g_data->line[i] == '\'')
 			quot_size++;
-		else if (g_data->line[i] == '\'')
-			quot_size2++;
 		i++;
 	}
-	if ((quot_size % 2 != 0 || quot_size2 % 2 != 0))
+	if (quot_size % 2 != 0)
 	{
 		g_data->exit_flag = -1;
 		return ((void *)-1);
 	}
-	else if ((int ) insert_with_quotation(tmp, g_data->line) == -1)
-	{
-		g_data->exit_flag = -1;
-		return ((void *)-1);
-	}
-	tmp = tmp->next;
 	return ((void *)1);
 }
 
-void	*removed_space_quot(t_arg *tmp)
+void	*removed_space_quot(t_arg **tmp)
 {
-	if ((int )quotation_counter(tmp) == -1)
+	char	*line;
+	t_arg	*temp;
+
+	line = ft_strtrim(g_data->line, " ");
+	free(g_data->line);
+	g_data->line = line;
+	if ((int )quotation_counter() == -1)
 	{
 		g_data->exit_flag = -1;
 		return ((void *)-1);
 	}
+	insert_with_quotation(*tmp, g_data->line);
+	temp = *tmp;
+	*tmp = (*tmp)->next;
+	free(temp);
 	return ((void *)0);
 }

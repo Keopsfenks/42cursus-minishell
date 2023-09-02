@@ -35,7 +35,7 @@ typedef struct s_data
 t_data	*g_data;
 
 void	*ft_parse(void);
-void	*removed_space_quot(t_arg *tmp);
+void	*removed_space_quot(t_arg **tmp);
 void	freelizer(t_arg *free);
 
 #endif
