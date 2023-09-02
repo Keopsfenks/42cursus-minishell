@@ -12,25 +12,19 @@
 
 #include "../includes/minishell.h"
 
-int	is_quotation(char *s)
-{
-	if (*s == '\"')
-		return (1);
-	else if ( *s == '\'')
-		return (2);
-	return (0);
-}
-
 void	*insert_with_quotation(t_arg *tmp, char *str)
 {
 	int		i;
 	int		rule;
 	int		len;
+	int		quot;
 
 	i = -1;
 	rule = 0;
 	len = 0;
-	str[ft_strlen(str)] = ' ';
+	quot = 0;
+	if (str[ft_strlen(str) - 1] != '\"' && str[ft_strlen(str) - 1] != '\'')
+		str[ft_strlen(str)] = ' ';
 	while (str[++i] != '\0')
 	{
 		if (str[i] == ' ' || !str[i])
@@ -42,12 +36,28 @@ void	*insert_with_quotation(t_arg *tmp, char *str)
 			len = -1;
 			i = i - 1;
 		}
+		else if (str[i] == '\"' || !str[i])
+		{
+			rule = i;
+			while (str[++i] != '\"')
+				quot++;
+			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule + 1, quot)));
+			quot = 0;
+		}
+		else if (str[i] == '\'' || !str[i])
+		{
+			rule = i;
+			while (str[++i] != '\'')
+				quot++;
+			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule + 1, quot)));
+			quot = 0;
+		}
 		len++;
 	}
 	free(str);
 	return ((void *)1);
 }
-//			printf("i: %d - start: %d - len: %d\n", i, rule, len);
+
 void	*quotation_counter(t_arg *tmp)
 {
 	int	i;

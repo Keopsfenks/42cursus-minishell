@@ -38,7 +38,7 @@ void	*ft_parse(void)
 	g_data->list = g_data->list->next;
 	//freelizer(temp); leak hatası ve abort yiyor.
 	for (int i = 0; g_data->list != NULL; ++i) {
-		printf("%s\n", g_data->list->content);
+		printf("%s:\n", g_data->list->content);
 		g_data->list = g_data->list->next;
 	}
 	return ((void *)0);
