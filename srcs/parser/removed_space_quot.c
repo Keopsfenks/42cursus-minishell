@@ -12,15 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	is_quotation(char *s)
-{
-	if (*s == '\"')
-		return (1);
-	else if ( *s == '\'')
-		return (2);
-	return (0);
-}
-
 void	*insert_with_quotation(t_arg *tmp, char *str)
 {
 	int		i;
@@ -34,18 +25,18 @@ void	*insert_with_quotation(t_arg *tmp, char *str)
 	str[ft_strlen(str)] = ' ';
 	while (str[++i] != '\0')
 	{
-		if (str[i] == '\"' && len++)
-			while (str[++i] != '\"' == 1 && str[i])
-				len++;
-		if (str[i] == '\'' && len++)
-			while (str[++i] != '\'' == 1 && str[i])
-				len++;
 		if (str[i] == ' ' || !str[i])
 		{
 			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule, len - 1)));
 			rule = i + 1;
 			len = 0;
 		}
+		else if (str[i] == '\"' && len++)
+			while (str[++i] != '\"' == 1 && str[i])
+				len++;
+		else if (str[i] == '\'' && len++)
+			while (str[++i] != '\'' == 1 && str[i])
+				len++;
 		len++;
 	}
 	free(str);
