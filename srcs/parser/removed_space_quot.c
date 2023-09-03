@@ -12,45 +12,39 @@
 
 #include "../includes/minishell.h"
 
+int	is_quotation(char *s)
+{
+	if (*s == '\"')
+		return (1);
+	else if ( *s == '\'')
+		return (2);
+	return (0);
+}
+
 void	*insert_with_quotation(t_arg *tmp, char *str)
 {
 	int		i;
 	int		rule;
 	int		len;
-	int		quot;
 
 	i = -1;
 	rule = 0;
-	len = 0;
-	quot = 0;
-	if (str[ft_strlen(str) - 1] != '\"' && str[ft_strlen(str) - 1] != '\'')
-		str[ft_strlen(str)] = ' ';
+	len = 1;
+
+	str[ft_strlen(str)] = ' ';
 	while (str[++i] != '\0')
 	{
+		if (str[i] == '\"' && len++)
+			while (str[++i] != '\"' == 1 && str[i])
+				len++;
+		if (str[i] == '\'' && len++)
+			while (str[++i] != '\'' == 1 && str[i])
+				len++;
 		if (str[i] == ' ' || !str[i])
 		{
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule, len)));
-			while (str[i] == ' ')
-				i++;
-			rule = i;
-			len = -1;
-			i = i - 1;
-		}
-		else if (str[i] == '\"' || !str[i])
-		{
-			rule = i;
-			while (str[++i] != '\"')
-				quot++;
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule + 1, quot)));
-			quot = 0;
-		}
-		else if (str[i] == '\'' || !str[i])
-		{
-			rule = i;
-			while (str[++i] != '\'')
-				quot++;
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule + 1, quot)));
-			quot = 0;
+			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, rule, len - 1)));
+			rule = i + 1;
+			len = 0;
 		}
 		len++;
 	}
