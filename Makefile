@@ -1,10 +1,10 @@
 SRCS = ./srcs/main.c \
 		./srcs/parser/parser_process.c \
-		./srcs/parser/utils.c			\
-		./srcs/parser/removed_space_quot.c
+		./srcs/parser/utils.c
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -lreadline
+
 RM = rm -rf
 LIBFT = ./srcs/libary/libft/libft.a
 OBJS = $(SRCS:.c=.o)
