@@ -16,9 +16,11 @@ void	insert_with_quotation(t_arg *tmp, char *str)
 {
 	int		i;
 	int		start;
+	int		counter;
 	int		len;
 
 	i = -1;
+	counter = 0;
 	start = 0;
 	len = 1;
 	str[ft_strlen(str)] = ' ';
@@ -27,19 +29,23 @@ void	insert_with_quotation(t_arg *tmp, char *str)
 		if (str[i] == ' ' || !str[i])
 		{
 			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, start, len - 1)));
-			start = i + 1;
+			while (str[i] == ' ' || !str[i])
+				i++;
+			i--;
 			len = 0;
+			start = i + 1;
 		}
-		if (str[i] == '|' && str[i - 1] != ' ' && str[i + 1] != ' ')
+		if ((str[i] == '|' || str[i] == '<' || str[i] == '>')
+			&& str[i - 1] != ' ' && str[i + 1] != ' ')
 		{
 			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, start, len - 1)));
-			while (str[i] == '|')
+			while ((str[i] == '|' || str[i] == '<' || str[i] == '>') && len++)
 			{
-				len++;
+				counter++;
 				i++;
 			}
-			if (len > 2)
-				return ;
+			if (counter >= 2)
+				exit(1);
 			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, i, len)));
 			len = 0;
 			start = i + 1;
@@ -91,7 +97,7 @@ void	*removed_space_quot(t_arg **tmp)
 	line = ft_strtrim(g_data->line, " ");
 	free(g_data->line);
 	g_data->line = line;
-	if ((int )quotation_counter() == -1)
+	if ((int )quotation_counter() == -1) // bozuk tırnak içindekilerinide sayıyor.
 	{
 		g_data->exit_flag = -1;
 		return ((void *)-1);
