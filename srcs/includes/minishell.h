@@ -50,7 +50,7 @@ typedef struct s_data
 	char		*line;
 	char		**envp;
 	char		**redirection;
-	int			exit_flag;
+	int			error_flag;
 }				t_data;
 
 t_data	*g_data;

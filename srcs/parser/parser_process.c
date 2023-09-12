@@ -6,108 +6,78 @@
 /*   By: segurbuz <segurbuz@student.42istanb>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/09 14:41:14 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/09/09 15:42:05 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	insert_with_quotation(t_arg *tmp, char *str)
+void	splitting_to_add_list(t_arg *temp, char *str)
 {
-	int		i;
-	int		start;
-	int		counter;
-	int		len;
+	int	i;
+	int	start;
+	int	counter;
 
 	i = -1;
-	counter = 0;
 	start = 0;
-	len = 1;
-	str[ft_strlen(str)] = ' ';
+	counter = 1;
 	while (str[++i] != '\0')
 	{
-		if (str[i] == ' ' || !str[i])
+		if (str[i] == '|')
 		{
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, start, len - 1)));
-			while (str[i] == ' ' || !str[i])
-				i++;
-			i--;
-			len = 0;
-			start = i + 1;
-		}
-		if ((str[i] == '|' || str[i] == '<' || str[i] == '>')
-			&& str[i - 1] != ' ' && str[i + 1] != ' ')
-		{
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, start, len - 1)));
-			while ((str[i] == '|' || str[i] == '<' || str[i] == '>') && len++)
+			if (str[i + 1] == '|' )
 			{
-				counter++;
-				i++;
+				g_data->error_flag = -1;
+				return ;
 			}
-			if (counter >= 2)
-				exit(1);
-			ft_lstadd_back(&tmp, ft_lstnew(ft_substr(str, i, len)));
-			len = 0;
+			if (!(ft_strlen(str) <= 2) && str[0] != '|')
+				ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, start, i - start)));
+			ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, i, 1)));
 			start = i + 1;
 		}
-		else if (str[i] == '\"' && len--)
+		else if (str[i] == '<' || str[i] == '>')
 		{
-			while (str[++i] != '\"' == 1 && str[i])
-				len++;
-			start++;
-			len--;
+			if (str[i + 1] == '<' || str[i + 1] == '>')
+			{
+				counter = 2;
+				if (str[i + 2] == '<' || str[i + 2] == '>')
+				{
+					g_data->error_flag = -1;
+					return ;
+				}
+			}
+			if (!(ft_strlen(str) <= 2) && str[0] != '<' && str[0] != '>')
+				ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, start, i - start)));
+			ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, i, counter)));
+			counter = 0;
+			start = i + 1;
+			i++;
 		}
-		else if (str[i] == '\'' && len--)
-		{
-			while (str[++i] != '\'' == 1 && str[i])
-				len++;
-			start++;
-		}
-		len++;
 	}
+	if (!(ft_strlen(str) <= 2) && str[ft_strlen(str) - 1] != '|'
+		&& str[ft_strlen(str) - 1] != '>' && str[ft_strlen(str) - 1] != '<')
+		ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, start, i - start)));
 	free(str);
 }
 
-void	*quotation_counter(void)
+void	split_line(t_arg *temp, char *str)
 {
 	int	i;
-	int	quot_size;
+	int	start;
 
 	i = 0;
-	quot_size = 0;
-	while (g_data->line[i] != '\0')
+	start = 0;
+	str[ft_strlen(str)] = ' ';
+	while (str[i] != '\0')
 	{
-		if (g_data->line[i] == '\"' || g_data->line[i] == '\'')
-			quot_size++;
+		if (str[i] == ' ')
+		{
+			splitting_to_add_list(temp, ft_substr(str, start, i - start));
+			start = i + 1;
+		}
 		i++;
 	}
-	if (quot_size % 2 != 0)
-	{
-		g_data->exit_flag = -1;
-		return ((void *)-1);
-	}
-	return ((void *)1);
-}
-
-void	*removed_space_quot(t_arg **tmp)
-{
-	char	*line;
-	t_arg	*temp;
-
-	line = ft_strtrim(g_data->line, " ");
-	free(g_data->line);
-	g_data->line = line;
-	if ((int )quotation_counter() == -1) // bozuk tırnak içindekilerinide sayıyor.
-	{
-		g_data->exit_flag = -1;
-		return ((void *)-1);
-	}
-	insert_with_quotation(*tmp, g_data->line);
-	temp = *tmp;
-	*tmp = (*tmp)->next;
-	free(temp);
-	return ((void *)0);
-}
+} // aasd|asdasd aasd 13
 
 void	*ft_parse(void)
 {
@@ -115,9 +85,17 @@ void	*ft_parse(void)
 
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
-	removed_space_quot(&temp);
-	for (int i = 0; temp != NULL; ++i) {
-		printf("%s;\n", temp->content);
+	split_line(temp, g_data->line);
+	if (g_data->error_flag == -1)
+	{
+		//mesaj;
+		return ((void *)-1);
+	}
+	ft_lstadd_back(&temp, NULL);
+	temp = temp->next;
+	while (temp != NULL)
+	{
+		printf("%s\n", temp->content);
 		temp = temp->next;
 	}
 	return ((void *)0);
