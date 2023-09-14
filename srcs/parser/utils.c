@@ -12,25 +12,24 @@
 
 #include "../includes/minishell.h"
 
-void	freelizer(t_arg *line)
+void	freelizer(t_arg **line)
 {
 	t_arg	*tmp;
 
-	tmp = line;
-	for (int i = 0; tmp != NULL; ++i) {
-		free(line->content);
-		tmp = line->next;
-		free(line);
-		line = tmp;
+	tmp = *line;
+	for (int i = 0; (*line) != NULL; ++i) {
+		free((*line)->content);
+		free(*line);
+		(*line) = (*line)->next;
 	}
 }
 
 int	is_check(char c)
 {
 	static int	rule = 1000;
-	if (g_data->quot == 0 && (c == '\"' || c == '\''))
+	if (g_data.quot == 0 && (c == '\"' || c == '\''))
 		rule = c;
 	if (c == rule)
-		g_data->quot += 1;
-	return (g_data->quot);
+		g_data.quot += 1;
+	return (g_data.quot);
 }

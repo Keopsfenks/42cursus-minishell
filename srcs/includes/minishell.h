@@ -26,6 +26,7 @@
 # include <string.h>
 # include <stdbool.h>
 
+
 typedef struct s_counter
 {
 	int	dollar;
@@ -46,13 +47,13 @@ typedef struct s_data
 	int			quot;
 }				t_data;
 
-t_data	*g_data;
+t_data	g_data;
 
-void	*ft_parse(void);
+void	ft_parse(void);
 void	*removed_space_quot(t_arg **tmp);
 void	split_redirections_pipe(t_arg **line);
-void	freelizer(t_arg *free);
+void	freelizer(t_arg **free);
 int		is_check(char c);
-void	struct_initilaize(int rule);
+void	struct_initilaize();
 
 #endif
