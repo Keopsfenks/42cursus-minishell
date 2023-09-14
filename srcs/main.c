@@ -17,9 +17,7 @@ void	struct_initilaize(void)
 	//envp eklenecek.
 	g_data = malloc(sizeof(g_data));
 	g_data->error_flag = 0;
-	g_data->parser.i = 0;
-	g_data->parser.start = 0;
-	g_data->parser.len = 0;
+	g_data->quot = 0;
 }
 
 int main(int ac, char **av, char **envp)

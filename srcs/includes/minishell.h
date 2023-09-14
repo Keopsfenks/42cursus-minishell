@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42istanbul.co>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/09 01:58:23 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/09/12 06:29:51 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,15 @@ typedef struct s_counter
 	int	pipe;
 }		t_counter;
 
-typedef	struct s_parser
-{
-	int	i;
-	int	start;
-	int	len;
-}		t_parser;
-
 typedef struct s_data
 {
 	t_counter	*counter;
 	t_arg		*list;
-	t_parser	parser;
 	char		*line;
 	char		**envp;
 	char		**redirection;
 	int			error_flag;
+	int			quot;
 }				t_data;
 
 t_data	*g_data;
