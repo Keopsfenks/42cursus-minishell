@@ -24,3 +24,13 @@ void	freelizer(t_arg *line)
 		line = tmp;
 	}
 }
+
+int	is_check(char c)
+{
+	static int	rule = 1000;
+	if (g_data->quot == 0 && (c == '\"' || c == '\''))
+		rule = c;
+	if (c == rule)
+		g_data->quot += 1;
+	return (g_data->quot);
+}

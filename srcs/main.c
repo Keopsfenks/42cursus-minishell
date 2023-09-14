@@ -12,17 +12,18 @@
 
 #include "./includes/minishell.h"
 
-void	struct_initilaize(void)
+void	struct_initilaize(int rule)
 {
 	//envp eklenecek.
-	g_data = malloc(sizeof(g_data));
+	if (rule == 1)
+		g_data = malloc(sizeof(g_data));
 	g_data->error_flag = 0;
 	g_data->quot = 0;
 }
 
 int main(int ac, char **av, char **envp)
 {
-	struct_initilaize();
+	struct_initilaize(1);
 	(void )envp;
 	(void )av;
 	(void )ac;

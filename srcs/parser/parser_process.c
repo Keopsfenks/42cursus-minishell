@@ -12,19 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	is_check(char c)
-{
-	static char	rule = ' ';
-
-	if (g_data->quot == 0 && (c == '\"' || c == '\''))
-		rule = c;
-	if (c == rule)
-	{
-		g_data->quot += 1;
-	}
-	return (g_data->quot);
-}
-
 void	splitting_to_add_list(t_arg *temp, char *str)
 {
 	int		i;
@@ -87,41 +74,22 @@ void	split_line(t_arg *temp, char *str)
 
 	i = -1;
 	start = 0;
-	str[ft_strlen(str)] = ' ';
-	while (str[++i] != '\0')
+	while (++i || 1)
 	{
-		if (str[i] == ' ')
+		if (is_check(str[i]) != 1 && (!str[i] || str[i] == ' '))
 		{
 			g_data->quot = 0;
 			splitting_to_add_list(temp, ft_substr(str, start, i - start));
 			start = i + 1;
 		}
-		else if (str[i] == '\"')
-		{
-			i += 2;
-			while (str[i - 1] != '\"' && str[i - 1] != '\0')
-				i++;
-			if (str[i - 1] == '\0')
-			{
-				g_data->error_flag = -1;
-				return ;
-			}
-			i--;
-		}
-		else if (str[i] == '\'')
-		{
-			i += 2;
-			while (str[i - 1] != '\'' && str[i - 1] != '\0')
-				i++;
-			if (str[i - 1] == '\0')
-			{
-				g_data->error_flag = -1;
-				return ;
-			}
-			i--;
-		}
 		else if (str[i] == '#')
 			return ;
+		if (str[i] == '\0')
+		{
+			if (g_data->quot == 1)
+				g_data->error_flag = -1;
+			break ;
+		}
 	}
 }
 
@@ -136,8 +104,10 @@ void	*ft_parse(void)
 	{
 		printf("HATA\n");
 		g_data->error_flag = 0;
+		g_data->quot = 0;
 		return ((void *)-1);
 	}
+	struct_initilaize(0);
 	ft_lstadd_back(&temp, NULL);
 	temp = temp->next;
 	while (temp != NULL)
@@ -146,6 +116,5 @@ void	*ft_parse(void)
 		temp = temp->next;
 	}
 	free(temp);
-	//printf("%d\n", i);
 	return ((void *)0);
 }
