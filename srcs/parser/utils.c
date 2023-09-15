@@ -17,7 +17,8 @@ void	freelizer(t_arg **line)
 	t_arg	*tmp;
 
 	tmp = *line;
-	for (int i = 0; (*line) != NULL; ++i) {
+	while ((*line) != NULL)
+	{
 		free((*line)->content);
 		free(*line);
 		(*line) = (*line)->next;
@@ -27,9 +28,12 @@ void	freelizer(t_arg **line)
 int	is_check(char c)
 {
 	static int	rule = 1000;
+
 	if (g_data.quot == 0 && (c == '\"' || c == '\''))
 		rule = c;
 	if (c == rule)
 		g_data.quot += 1;
+	if (g_data.quot % 2 == 0)
+		g_data.quot = 0;
 	return (g_data.quot);
 }
