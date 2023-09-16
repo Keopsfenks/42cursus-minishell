@@ -29,8 +29,8 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 				return (g_data.error_flag = -1, (void *)-1);
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
-				ft_lstnew(ft_substr(str, start, i - start)));
-			ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, i, 1)));
+				ft_lstnew(0, ft_substr(str, start, i - start)));
+			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, 1)));
 			start = i + 1;
 		}
 		else if (g_data.quot != 1 && (str[i] == '<' || str[i] == '>'))
@@ -45,8 +45,8 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 			}
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
-				ft_lstnew(ft_substr(str, start, i - start)));
-			ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, i, counter)));
+				ft_lstnew(0, ft_substr(str, start, i - start)));
+			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, counter)));
 			start = i + counter;
 			counter = 1;
 			i++;
@@ -54,7 +54,7 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 	}
 	if (str[ft_strlen(str) - 1] != '|'
 		&& str[ft_strlen(str) - 1] != '>' && str[ft_strlen(str) - 1] != '<')
-		ft_lstadd_back(&temp, ft_lstnew(ft_substr(str, start, i - start)));
+		ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, start, i - start)));
 	return (free(str), (void *)1);
 }
 
@@ -125,6 +125,7 @@ char	*path_add_dollars(char *str, char *path, char *dollar)
 	}
 	new_str = ft_strjoin(str_start, path);
 	new_str = ft_strjoin(new_str, str_end);
+	free(dollar);
 	return (new_str);
 }
 
@@ -150,6 +151,8 @@ char	*find_path_name(char *str)
 			path = ft_substr(str, (i - len) + 2, len - 2);
 		}
 	}
+	g_data.quot_type = 1000;
+	g_data.quot = 0;
 	return (path_add_dollars(str, path, ft_strdup("$")));
 }
 

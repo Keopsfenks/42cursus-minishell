@@ -3,7 +3,7 @@ SRCS = ./srcs/main.c \
 		./srcs/parser/utils.c
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lreadline -g
+CFLAGS = -Wall -Wextra -Werror -lreadline
 
 RM = rm -rf
 LIBFT = ./srcs/libary/libft/libft.a
