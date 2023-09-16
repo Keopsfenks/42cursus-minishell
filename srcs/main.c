@@ -49,5 +49,6 @@ int main(int ac, char **av, char **envp)
 		add_history(g_data.line);
 		ft_parse();
 		free(g_data.line);
+		//system("leaks minishell");
 	}
 }

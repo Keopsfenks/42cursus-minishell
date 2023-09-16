@@ -51,13 +51,11 @@ typedef struct s_data
 t_data	g_data;
 
 void	ft_parse(void);
-void	*removed_space_quot(t_arg **tmp);
-void	split_redirections_pipe(t_arg **line);
 void	freelizer(t_arg **free);
 int		is_check(char c);
 void	struct_initilaize(char **envp, int rule);
 bool	path_check(char c);
 char	*path_find(char *path);
-int		is_check_quot(char c);
+void	check_quot_list(t_arg *temp);
 
 #endif

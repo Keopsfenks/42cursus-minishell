@@ -174,6 +174,7 @@ void	ft_parse(void)
 	ft_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
+	check_quot_list(temp);
 	free(tmp);
 	g_data.list = temp;
 	test(&g_data.list);
