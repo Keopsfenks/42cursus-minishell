@@ -34,6 +34,47 @@ int	is_check(char c)
 	if (c == rule)
 		g_data.quot += 1;
 	if (g_data.quot % 2 == 0)
+	{
+		g_data.quot_type = 1000;
 		g_data.quot = 0;
-	return (g_data.quot);
+	}
+	return (g_data.quot_type = rule, g_data.quot);
+}
+
+bool	path_check(char c)
+{
+	if (ft_isdigit(c) || ft_isalnum(c) || c == '_')
+		return (true);
+	return (false);
+}
+
+int	path_size(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '=')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+char	*path_find(char *path) // HATALI
+{
+	int	i;
+
+	i = -1;
+	while (g_data.envp[++i])
+	{
+		if (ft_strncmp(g_data.envp[i], path, ft_strlen(path)) == 0
+			&& path_size(g_data.envp[i]) <= (int)ft_strlen(path))
+			break ;
+	}
+	if (g_data.envp[i] == NULL)
+		return (" ");
+	else
+		return (g_data.envp[i] + path_size(path) + 1);
 }

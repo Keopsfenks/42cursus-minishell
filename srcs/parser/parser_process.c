@@ -58,6 +58,7 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 	return (free(str), (void *)1);
 }
 
+
 void	split_line(t_arg *temp, char *str)
 {
 	int	i;
@@ -99,14 +100,69 @@ void	test(t_arg **temp)
 	}
 }
 
+char	*path_add_dollars(char *str, char *path, char *dollar)
+{
+	char	*str_start;
+	char	*new_str;
+	char	*str_end;
+	int		i;
+
+	i = 0;
+	while (str[i] != '$' && str[i] != '\0')
+		i++;
+	str_start = ft_substr(str, 0, i);
+	str_end = ft_substr(str, (ft_strlen(path) + i) + 1, ft_strlen(str) - i);
+	i = -1;
+	while (str[++i] != '\0')
+	{
+		if (is_check(str[i]) <= 1 && str[i] == '$')
+		{
+			if (g_data.quot_type == '\'')
+				path = ft_strjoin(dollar, path);
+			else
+				path = path_find(path);
+		}
+	}
+	new_str = ft_strjoin(str_start, path);
+	new_str = ft_strjoin(new_str, str_end);
+	return (new_str);
+}
+
+char	*find_path_name(char *str)
+{
+	int		i;
+	int		len;
+	char	*path;
+
+	i = -1;
+	len = 1;
+	while (str[++i] != '\0')
+	{
+		if (str[i] == '$')
+		{
+			i++;
+			while (len++ && path_check(str[i]))
+			{
+				if (!path_check(str[i]))
+					break ;
+				i++;
+			}
+			path = ft_substr(str, (i - len) + 2, len - 2);
+		}
+	}
+	return (path_add_dollars(str, path, ft_strdup("$")));
+}
+
 void	ft_parse(void)
 {
 	t_arg	*temp;
 	t_arg	*tmp;
+	char	*str;
 
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
-	split_line(temp, ft_strtrim(g_data.line, " "));
+	str = find_path_name(ft_strtrim(g_data.line, " "));
+	split_line(temp, ft_strtrim(str, " "));
 	if (g_data.error_flag == -1)
 	{
 		printf("HATA\n");
@@ -114,7 +170,7 @@ void	ft_parse(void)
 		g_data.quot = 0;
 		return ;
 	}
-	struct_initilaize();
+	struct_initilaize(NULL, 0);
 	ft_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
