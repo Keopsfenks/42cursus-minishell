@@ -108,20 +108,18 @@ void	ft_parse(void)
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
 	find_path_name();
-	printf("%s\n", g_data.line);
-	//split_line(temp, ft_strtrim(g_data.line, " "));
+	split_line(temp, ft_strtrim(g_data.line, " "));
 	if (g_data.error_flag == -1)
 	{
 		printf("HATA\n");
-		g_data.error_flag = 0;
-		g_data.quot = 0;
+		free(temp);
 		return ;
 	}
 	struct_initilaize(NULL, 0);
 	ft_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
-	//check_quot_list(temp);
+	check_quot_list(temp);
 	free(tmp);
 	g_data.list = temp;
 	test(&g_data.list);

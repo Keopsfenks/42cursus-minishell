@@ -19,14 +19,15 @@ void	envp_copy(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	g_data.envp = (char **)malloc(sizeof(char *) * (i + 1));
+	g_data.envp = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
 	while (envp[i])
 	{
 		g_data.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	g_data.envp[i] = NULL;
+	g_data.envp[i] = ft_strdup("?");
+	g_data.envp[i + 1] = NULL;
 }
 
 void	struct_initilaize(char **envp, int rule)

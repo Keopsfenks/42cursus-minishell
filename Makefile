@@ -1,7 +1,8 @@
 SRCS = ./srcs/main.c \
 		./srcs/parser/parser_process.c \
 		./srcs/parser/utils.c \
-		./srcs/parser/env_check.c
+		./srcs/parser/env_check.c \
+		./srcs/parser/trim_quot.c
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -lreadline

@@ -14,7 +14,7 @@
 
 bool	path_check(char c)
 {
-	if (ft_isdigit(c) || ft_isalnum(c) || c == '_')
+	if (ft_isdigit(c) || ft_isalnum(c) || c == '_' || c == '?')
 		return (true);
 	return (false);
 }
@@ -38,6 +38,8 @@ char	*path_find(char *path) // HATALI
 	int	i;
 
 	i = -1;
+	if (path[1] == '?' && ft_strlen(path + 1) == 1)
+		return ("returned-error:?");
 	while (g_data.envp[++i])
 	{
 		if (ft_strncmp(g_data.envp[i], path + 1, ft_strlen(path + 1)) == 0
