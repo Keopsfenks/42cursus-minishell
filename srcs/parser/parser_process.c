@@ -100,62 +100,6 @@ void	test(t_arg **temp)
 	}
 }
 
-char	*path_add_dollars(char *str, char *path, char *dollar)
-{
-	char	*str_start;
-	char	*new_str;
-	char	*str_end;
-	int		i;
-
-	i = 0;
-	while (str[i] != '$' && str[i] != '\0')
-		i++;
-	str_start = ft_substr(str, 0, i);
-	str_end = ft_substr(str, (ft_strlen(path) + i) + 1, ft_strlen(str) - i);
-	i = -1;
-	while (str[++i] != '\0')
-	{
-		if (is_check(str[i]) <= 1 && str[i] == '$')
-		{
-			if (g_data.quot_type == '\'')
-				path = ft_strjoin(dollar, path);
-			else
-				path = path_find(path);
-			break ;
-		}
-	}
-	new_str = ft_strjoin(str_start, path);
-	new_str = ft_strjoin(new_str, str_end);
-	free(g_data.line);
-	g_data.line = new_str;
-	return (new_str);
-}
-
-void	find_path_name()
-{
-	int		i;
-	int		len;
-	char	*path;
-
-	i = -1;
-	len = 1;
-	while (g_data.line[++i] != '\0')
-	{
-		if (g_data.line[i - 1] == '$')
-		{
-			len = 1;
-			while (len++ && path_check(g_data.line[i]))
-			{
-				if (!path_check(g_data.line[i]))
-					break ;
-				i++;
-			}
-			path = ft_substr(g_data.line, (i - len) + 2, len - 2);
-			path_add_dollars(g_data.line, path, ft_strdup("$"));
-		}
-	}
-}
-
 void	ft_parse(void)
 {
 	t_arg	*temp;
@@ -164,9 +108,8 @@ void	ft_parse(void)
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
 	find_path_name();
-	g_data.quot_type = 1000;
-	g_data.quot = 0;
-	split_line(temp, ft_strtrim(g_data.line, " "));
+	printf("%s\n", g_data.line);
+	//split_line(temp, ft_strtrim(g_data.line, " "));
 	if (g_data.error_flag == -1)
 	{
 		printf("HATA\n");
@@ -178,7 +121,7 @@ void	ft_parse(void)
 	ft_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
-	check_quot_list(temp);
+	//check_quot_list(temp);
 	free(tmp);
 	g_data.list = temp;
 	test(&g_data.list);

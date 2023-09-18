@@ -57,5 +57,8 @@ void	struct_initilaize(char **envp, int rule);
 bool	path_check(char c);
 char	*path_find(char *path);
 void	check_quot_list(t_arg *temp);
+void	find_path_name(void);
+void	path_add_dollars(char *str, char *path);
+int		path_control(char *str, int i);
 
 #endif

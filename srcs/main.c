@@ -49,6 +49,8 @@ int main(int ac, char **av, char **envp)
 		add_history(g_data.line);
 		ft_parse();
 		free(g_data.line);
+		struct_initilaize(NULL, 0);
 		//system("leaks minishell");
 	}
 }
+// $PATH $USER' '$PWD ABORT || leak var düzelt. tırnak içinde gelen anlamsız dollar silinicek.

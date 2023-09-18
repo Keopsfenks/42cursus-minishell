@@ -27,56 +27,16 @@ void	freelizer(t_arg **line)
 
 int	is_check(char c)
 {
-	static int	rule = 1000;
-
 	if (g_data.quot == 0 && (c == '\"' || c == '\''))
-		rule = c;
-	if (c == rule)
+		g_data.quot_type = c;
+	if (c == g_data.quot_type)
 		g_data.quot += 1;
 	if (g_data.quot % 2 == 0)
 	{
 		g_data.quot_type = 1000;
 		g_data.quot = 0;
 	}
-	return (g_data.quot_type = rule, g_data.quot);
-}
-
-bool	path_check(char c)
-{
-	if (ft_isdigit(c) || ft_isalnum(c) || c == '_')
-		return (true);
-	return (false);
-}
-
-int	path_size(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '=')
-			break ;
-		i++;
-	}
-	return (i);
-}
-
-char	*path_find(char *path) // HATALI
-{
-	int	i;
-
-	i = -1;
-	while (g_data.envp[++i])
-	{
-		if (ft_strncmp(g_data.envp[i], path, ft_strlen(path)) == 0
-			&& path_size(g_data.envp[i]) <= (int)ft_strlen(path))
-			break ;
-	}
-	if (g_data.envp[i] == NULL)
-		return (" ");
-	else
-		return (g_data.envp[i] + path_size(path) + 1);
+	return (g_data.quot);
 }
 
 int	quot_check(char *str)
@@ -159,4 +119,16 @@ void	check_quot_list(t_arg *temp)
 		tmp = tmp->next;
 	}
 	g_data.quot = 0;
+}
+
+int path_control(char *str, int i)
+{
+	while (str[i] != '\0')
+	{
+		is_check(str[i]);
+		if (g_data.quot_type != '\'' && str[i] == '$')
+			return (i);
+		i++;
+	}
+	return (i);
 }
