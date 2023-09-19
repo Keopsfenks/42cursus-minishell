@@ -12,11 +12,25 @@
 
 #include "../includes/minishell.h"
 
-bool	path_check(char c)
+bool	path_check(char const *str, char c, int rule)
 {
-	if (ft_isdigit(c) || ft_isalnum(c) || c == '_' || c == '?')
-		return (true);
-	return (false);
+	int	i;
+
+	i = -1;
+	if (rule == 1)
+	{
+		if (ft_isdigit(c) || ft_isalnum(c) || c == '_'
+			|| c == '?' || c == '$')
+			return (true);
+		return (false);
+	}
+	else
+	{
+		while (str[++i] != '\0')
+			if (str[i] == '$')
+				return (true);
+		return (false);
+	}
 }
 
 int	path_size(char *str)
@@ -33,13 +47,18 @@ int	path_size(char *str)
 	return (i);
 }
 
-char	*path_find(char *path) // HATALI
+char	*path_find(char *path)
 {
 	int	i;
 
 	i = -1;
-	if (path[1] == '?' && ft_strlen(path + 1) == 1)
-		return ("returned-error:?");
+	if (ft_strlen(path + 1) == 1)
+	{
+		if (path[1] == '?')
+			return ("returned-error:?");
+		else if (path[1] == '$')
+			return (ft_itoa(getpid()));
+	}
 	while (g_data.envp[++i])
 	{
 		if (ft_strncmp(g_data.envp[i], path + 1, ft_strlen(path + 1)) == 0
@@ -52,10 +71,11 @@ char	*path_find(char *path) // HATALI
 		return (g_data.envp[i] + path_size(path));
 }
 
-void	path_add_dollars(char *str, char *path)
+char	*path_add_dollars(char *str, char *path)
 {
 	char	*str_start;
 	char	*str_end;
+	char	*new_str;
 	int		i;
 
 	i = 0;
@@ -63,6 +83,7 @@ void	path_add_dollars(char *str, char *path)
 	i = path_control(str, i);
 	str_start = ft_substr(str, 0, i);
 	str_end = ft_substr(str, (ft_strlen(path + 1) + i) + 1, ft_strlen(str) - i);
+
 	i = -1;
 	while (str[++i] != '\0')
 	{
@@ -72,39 +93,49 @@ void	path_add_dollars(char *str, char *path)
 			break ;
 		}
 	}
-	free(g_data.line);
-	g_data.line = ft_strjoin(str_start, path);
-	g_data.line = ft_strjoin(g_data.line, str_end);
-	free(str_end);
+	new_str = ft_strjoin(str_start, path);
+	new_str = ft_strjoin(new_str, str_end);
+	return (free(str_end), new_str);
 }
-//"$USER" '$PATH' $PWD
-void	find_path_name(void)
+
+void	find_env_name(t_arg *temp)
 {
 	int		i;
+	int		c;
 	int		len;
 	char	*path;
 
-	i = -1;
 	len = 1;
-	while (g_data.line[++i] != '\0')
+	while (temp != NULL)
 	{
-		is_check(g_data.line[i]);
-		if (g_data.quot_type != '\'' && g_data.line[i] == '$')
+		if (path_check(temp->content, '\0', 0))
 		{
-			len = 1;
-			i++;
-			while (len++ && path_check(g_data.line[i]))
-			{
-				if (!path_check(g_data.line[i]))
-					break ;
-				i++;
-			}
-			path = ft_substr(g_data.line, (i - len) + 1, len - 1);
-			path_add_dollars(g_data.line, path);
-			g_data.quot = 0;
 			i = -1;
-			free(path);
+			while (temp->content[++i] != '\0')
+			{
+				is_check(temp->content[i]);
+				if (g_data.quot_type != '\'' && temp->content[i - 1] == '$')
+				{
+					c = i;
+					len = 1;
+					while (len++ && path_check(NULL, temp->content[i], 1) \
+						&& temp->content[i - 1] != '?')
+					{
+						if (!path_check(NULL, temp->content[i], 1))
+							break ;
+						i++;
+					}
+					if (temp->content[c] == '$')
+						path = ft_substr(temp->content, (i - len) + 1, 2);
+					else
+						path = ft_substr(temp->content, (i - len) + 1, len - 1);
+					temp->content = path_add_dollars(temp->content, path);
+					g_data.quot = 0;
+					i = -1;
+					free(path);
+				}
+			}
 		}
+		temp = temp->next;
 	}
-	struct_initilaize(NULL, 0);
 }

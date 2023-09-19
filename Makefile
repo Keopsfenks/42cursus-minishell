@@ -5,8 +5,7 @@ SRCS = ./srcs/main.c \
 		./srcs/parser/trim_quot.c
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lreadline
-
+CFLAGS = -Wall -Wextra -Werror -lreadline -g
 RM = rm -rf
 LIBFT = ./srcs/libary/libft/libft.a
 OBJS = $(SRCS:.c=.o)

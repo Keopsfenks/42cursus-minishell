@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	*splitting_to_add_list(t_arg *temp, char *str)
+void	splitting_to_add_list(t_arg *temp, char *str)
 {
 	int		i;
 	int		start;
@@ -26,7 +26,7 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 		if (is_check(str[i]) != 1 && str[i] == '|')
 		{
 			if (str[i + 1] == '|' || str[i + 1] == '<' || str[i + 1] == '>')
-				return (g_data.error_flag = -1, (void *)-1);
+				g_data.error_flag = -1;
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
@@ -36,12 +36,12 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 		else if (g_data.quot != 1 && (str[i] == '<' || str[i] == '>'))
 		{
 			if (str[i + 1] == '|')
-				return (g_data.error_flag = -1, (void *)-1);
+				g_data.error_flag = -1;
 			if (str[i + 1] == '<' || str[i + 1] == '>')
 			{
 				counter = 2;
 				if (str[i + 2] == '<' || str[i + 2] == '>' || str[i + 2] == '|')
-					return (g_data.error_flag = -1, (void *)-1);
+					g_data.error_flag = -1;
 			}
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
@@ -55,9 +55,8 @@ void	*splitting_to_add_list(t_arg *temp, char *str)
 	if (str[ft_strlen(str) - 1] != '|'
 		&& str[ft_strlen(str) - 1] != '>' && str[ft_strlen(str) - 1] != '<')
 		ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, start, i - start)));
-	return (free(str), (void *)1);
+	free(str);
 }
-
 
 void	split_line(t_arg *temp, char *str)
 {
@@ -107,7 +106,6 @@ void	ft_parse(void)
 
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
-	find_path_name();
 	split_line(temp, ft_strtrim(g_data.line, " "));
 	if (g_data.error_flag == -1)
 	{
@@ -119,8 +117,9 @@ void	ft_parse(void)
 	ft_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
-	check_quot_list(temp);
 	free(tmp);
+	find_env_name(temp);
+	check_quot_list(temp);
 	g_data.list = temp;
 	test(&g_data.list);
 	freelizer(&temp);

@@ -26,7 +26,7 @@ int	quot_check(char *str)
 	return (0);
 }
 
-int		new_str_lenght(char *str)
+int	new_str_lenght(char *str)
 {
 	int	i;
 	int	len;
@@ -41,6 +41,7 @@ int		new_str_lenght(char *str)
 				len++;
 		else
 			len++;
+		struct_initilaize(NULL, 0);
 		i++;
 	}
 	return (len);
@@ -68,6 +69,7 @@ char	*trim_quot(char *str)
 				new_str[j++] = str[i];
 		else
 			new_str[j++] = str[i];
+		struct_initilaize(NULL, 0);
 		i++;
 	}
 	new_str[j] = '\0';

@@ -12,6 +12,12 @@
 
 #include "../includes/minishell.h"
 
+void	ft_error(char *str)
+{
+	printf("%s\n", str);
+	g_data.error_flag = 0;
+}
+
 void	freelizer(t_arg **line)
 {
 	t_arg	*tmp;
@@ -39,8 +45,7 @@ int	is_check(char c)
 	return (g_data.quot);
 }
 
-
-int path_control(char *str, int i)
+int	path_control(char *str, int i)
 {
 	while (str[i] != '\0')
 	{

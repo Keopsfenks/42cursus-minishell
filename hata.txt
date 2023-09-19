@@ -1,0 +1,41 @@
+minishell-$
+minishell-$ echo $PWD "deneme $PaTh "$$" '$PWD'  "melih'karagoz"42  '123|321'| > a.txt"qwerty"
+HATA
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  "melih'karagoz"42  '123|321'| > a.txt"qwerty"
+HATA
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  "melih'karagoz"42
+HATA
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  "melihkaragoz"42
+list: echo;
+list: /Users/segurbuz/Desktop/42cursus-minishell;
+list: deneme ;
+list: ;
+list: $PWD;
+list: melihkaragoz42;
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  123"melihkaragoz"42
+list: echo;
+list: /Users/segurbuz/Desktop/42cursus-minishell;
+list: deneme ;
+list: ;
+list: $PWD;
+list: 123melihkaragoz42;
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  '123'"melihkaragoz"42
+list: echo;
+list: /Users/segurbuz/Desktop/42cursus-minishell;
+list: deneme ;
+list: ;
+list: $PWD;
+list: 123"melihkaragoz"42;
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  '123'"melihkaragoz"42'4343'
+list: echo;
+list: /Users/segurbuz/Desktop/42cursus-minishell;
+list: deneme ;
+list: ;
+list: $PWD;
+list: 123"melihkaragoz"42'4343;
+minishell-$ echo $PWD "deneme $PaTh" $pWd "$$" '$PWD'  '123'"melih'karagoz"42'4343'
+zsh: segmentation fault  ./minishell
+segurbuz@k1m41s06 42cursus-minishell % ./minishell
+
+
+"$sa?b" hatalı
