@@ -25,8 +25,6 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 	{
 		if (is_check(str[i]) != 1 && str[i] == '|')
 		{
-			if (str[i + 1] == '|' || str[i + 1] == '<' || str[i + 1] == '>')
-				g_data.error_flag = -1;
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
@@ -35,14 +33,8 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 		}
 		else if (g_data.quot != 1 && (str[i] == '<' || str[i] == '>'))
 		{
-			if (str[i + 1] == '|')
-				g_data.error_flag = -1;
 			if (str[i + 1] == '<' || str[i + 1] == '>')
-			{
 				counter = 2;
-				if (str[i + 2] == '<' || str[i + 2] == '>' || str[i + 2] == '|')
-					g_data.error_flag = -1;
-			}
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
@@ -53,8 +45,6 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 		}
 		else if (g_data.quot != 1 && str[i] == ';')
 		{
-			if (str[i + 1] == '|' || str[i + 1] == '<' || str[i + 1] == '>')
-				g_data.error_flag = -1;
 			if (ft_isprint(str[i - 1]))
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
