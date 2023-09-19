@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-bool	path_check(char const *str, char c, int rule)
+bool	env_check(char const *str, char c, int rule)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ bool	path_check(char const *str, char c, int rule)
 	}
 }
 
-int	path_size(char *str)
+int	env_size(char *str)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ int	path_size(char *str)
 	return (i);
 }
 
-char	*path_find(char *path)
+char	*env_find(char *path)
 {
 	int	i;
 
@@ -62,16 +62,16 @@ char	*path_find(char *path)
 	while (g_data.envp[++i])
 	{
 		if (ft_strncmp(g_data.envp[i], path + 1, ft_strlen(path + 1)) == 0
-			&& path_size(g_data.envp[i]) <= (int)ft_strlen(path + 1))
+			&& env_size(g_data.envp[i]) <= (int)ft_strlen(path + 1))
 			break ;
 	}
 	if (g_data.envp[i] == NULL)
 		return ("\0");
 	else
-		return (g_data.envp[i] + path_size(path));
+		return (g_data.envp[i] + env_size(path));
 }
 
-char	*path_add_dollars(char *str, char *path)
+char	*env_add_dollars(char *str, char *path)
 {
 	char	*str_start;
 	char	*str_end;
@@ -80,7 +80,7 @@ char	*path_add_dollars(char *str, char *path)
 
 	i = 0;
 	struct_initilaize(NULL, 0);
-	i = path_control(str, i);
+	i = env_control(str, i);
 	str_start = ft_substr(str, 0, i);
 	str_end = ft_substr(str, (ft_strlen(path + 1) + i) + 1, ft_strlen(str) - i);
 
@@ -89,7 +89,7 @@ char	*path_add_dollars(char *str, char *path)
 	{
 		if (g_data.quot_type != '\'' && str[i] == '$')
 		{
-			path = path_find(path);
+			path = env_find(path);
 			break ;
 		}
 	}
@@ -108,7 +108,7 @@ void	find_env_name(t_arg *temp)
 	len = 1;
 	while (temp != NULL)
 	{
-		if (path_check(temp->content, '\0', 0))
+		if (env_check(temp->content, '\0', 0))
 		{
 			i = -1;
 			while (temp->content[++i] != '\0')
@@ -118,10 +118,10 @@ void	find_env_name(t_arg *temp)
 				{
 					c = i;
 					len = 1;
-					while (len++ && path_check(NULL, temp->content[i], 1) \
+					while (len++ && env_check(NULL, temp->content[i], 1) \
 						&& temp->content[i - 1] != '?')
 					{
-						if (!path_check(NULL, temp->content[i], 1))
+						if (!env_check(NULL, temp->content[i], 1))
 							break ;
 						i++;
 					}
@@ -129,7 +129,7 @@ void	find_env_name(t_arg *temp)
 						path = ft_substr(temp->content, (i - len) + 1, 2);
 					else
 						path = ft_substr(temp->content, (i - len) + 1, len - 1);
-					temp->content = path_add_dollars(temp->content, path);
+					temp->content = env_add_dollars(temp->content, path);
 					g_data.quot = 0;
 					i = -1;
 					free(path);

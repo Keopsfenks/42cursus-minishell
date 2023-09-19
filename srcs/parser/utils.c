@@ -45,7 +45,7 @@ int	is_check(char c)
 	return (g_data.quot);
 }
 
-int	path_control(char *str, int i)
+int	env_control(char *str, int i)
 {
 	while (str[i] != '\0')
 	{

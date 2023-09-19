@@ -51,9 +51,23 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 			counter = 1;
 			i++;
 		}
+		else if (g_data.quot != 1 && str[i] == ';')
+		{
+			if (str[i + 1] == '|' || str[i + 1] == '<' || str[i + 1] == '>')
+				g_data.error_flag = -1;
+			if (ft_isprint(str[i - 1]))
+				ft_lstadd_back(&temp, \
+				ft_lstnew(0, ft_substr(str, start, i - start)));
+			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, counter)));
+			start = i + counter;
+			counter = 1;
+			i++;
+		}
 	}
 	if (str[ft_strlen(str) - 1] != '|'
-		&& str[ft_strlen(str) - 1] != '>' && str[ft_strlen(str) - 1] != '<')
+		&& str[ft_strlen(str) - 1] != '>' \
+		&& str[ft_strlen(str) - 1] != '<' \
+		&& str[ft_strlen(str) - 1] != ';')
 		ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, start, i - start)));
 	free(str);
 }
@@ -94,7 +108,7 @@ void	test(t_arg **temp)
 	tmp = *temp;
 	while (tmp != NULL)
 	{
-		printf("list: %s;\n", tmp->content);
+		printf("list: %s$\n", tmp->content);
 		tmp = tmp->next;
 	}
 }

@@ -54,11 +54,11 @@ void	ft_parse(void);
 void	freelizer(t_arg **free);
 int		is_check(char c);
 void	struct_initilaize(char **envp, int rule);
-bool	path_check(char const *str, char c, int rule);
-char	*path_find(char *path);
+bool	env_check(char const *str, char c, int rule);
+char	*env_find(char *path);
 void	check_quot_list(t_arg *temp);
-char	*path_add_dollars(char *str, char *path);
-int		path_control(char *str, int i);
+char	*env_add_dollars(char *str, char *path);
+int		env_control(char *str, int i);
 void	ft_error(char *str);
 void	find_env_name(t_arg *temp);
 
