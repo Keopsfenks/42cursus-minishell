@@ -56,3 +56,8 @@ int	env_control(char *str, int i)
 	}
 	return (i);
 }
+
+void	parse_error(t_arg *tmp)
+{
+	(void)tmp;
+}

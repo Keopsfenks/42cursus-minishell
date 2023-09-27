@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libary/libft/libft_extras.h"
+# include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -25,7 +26,6 @@
 # include <stdarg.h>
 # include <string.h>
 # include <stdbool.h>
-
 
 typedef struct s_counter
 {
@@ -44,6 +44,7 @@ typedef struct s_data
 	char		**envp;
 	char		**redirection;
 	int			error_flag;
+	int			error_code;
 	int			quot;
 	int			quot_type;
 }				t_data;

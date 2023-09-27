@@ -19,21 +19,22 @@ void	envp_copy(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	g_data.envp = (char **)malloc(sizeof(char *) * (i + 2));
+	g_data.envp = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (envp[i])
 	{
 		g_data.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	g_data.envp[i] = ft_strdup("?");
-	g_data.envp[i + 1] = NULL;
+	g_data.envp[i] = NULL;
 }
 
 void	struct_initilaize(char **envp, int rule)
 {
 	if (rule == 1)
 		envp_copy(envp);
+	if (rule == 2)
+		g_data.error_code = 0;
 	g_data.error_flag = 0;
 	g_data.quot = 0;
 	g_data.quot_type = 1000;
@@ -42,6 +43,7 @@ void	struct_initilaize(char **envp, int rule)
 int main(int ac, char **av, char **envp)
 {
 	struct_initilaize(envp, 1);
+	struct_initilaize(envp, 2);
 	(void )av;
 	(void )ac;
 	while (1)

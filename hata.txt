@@ -38,4 +38,4 @@ zsh: segmentation fault  ./minishell
 segurbuz@k1m41s06 42cursus-minishell % ./minishell
 
 
-"$sa?b" hatalı
+"$sa?b" hatalı parse |> >| düzeltilecek.

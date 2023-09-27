@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42istanb>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/14 17:20:23 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:17:06 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 	{
 		if (is_check(str[i]) != 1 && str[i] == '|')
 		{
-			if (ft_isprint(str[i - 1]))
+			if (ft_isprint(str[i - 1]) && (str[i - 1] != '|' \
+				&& str[i - 1] != '>' && str[i - 1] != '<'))
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
 			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, 1)));
@@ -35,29 +36,19 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 		{
 			if (str[i + 1] == '<' || str[i + 1] == '>')
 				counter = 2;
-			if (ft_isprint(str[i - 1]))
+			if (ft_isprint(str[i - 1]) && str[i - 1] != '|')
 				ft_lstadd_back(&temp, \
 				ft_lstnew(0, ft_substr(str, start, i - start)));
 			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, counter)));
 			start = i + counter;
+			if (counter == 2)
+				i++;
 			counter = 1;
-			i++;
-		}
-		else if (g_data.quot != 1 && str[i] == ';')
-		{
-			if (ft_isprint(str[i - 1]))
-				ft_lstadd_back(&temp, \
-				ft_lstnew(0, ft_substr(str, start, i - start)));
-			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, counter)));
-			start = i + counter;
-			counter = 1;
-			i++;
 		}
 	}
 	if (str[ft_strlen(str) - 1] != '|'
 		&& str[ft_strlen(str) - 1] != '>' \
-		&& str[ft_strlen(str) - 1] != '<' \
-		&& str[ft_strlen(str) - 1] != ';')
+		&& str[ft_strlen(str) - 1] != '<')
 		ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, start, i - start)));
 	free(str);
 }
@@ -71,7 +62,8 @@ void	split_line(t_arg *temp, char *str)
 	start = 0;
 	while (++i || 1)
 	{
-		if (is_check(str[i]) != 1 && (!str[i] || str[i] == ' '))
+		if (is_check(str[i]) != 1 && (!str[i] || str[i] == ' ') \
+		&& !(ft_strlen(str) < 1))
 		{
 			splitting_to_add_list(temp, ft_substr(str, start, i - start));
 			while (str[i] == ' ' || !str[i])
@@ -98,7 +90,7 @@ void	test(t_arg **temp)
 	tmp = *temp;
 	while (tmp != NULL)
 	{
-		printf("list: %s$\n", tmp->content);
+		printf("list: %s;\n", tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -111,9 +103,10 @@ void	ft_parse(void)
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
 	split_line(temp, ft_strtrim(g_data.line, " "));
-	if (g_data.error_flag == -1)
+	if (g_data.error_flag != 0)
 	{
 		printf("HATA\n");
+		g_data.error_code = 127;
 		free(temp);
 		return ;
 	}
