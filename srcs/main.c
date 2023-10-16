@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segurbuz <segurbuz@student.42istanbul.co>  +#+  +:+       +#+        */
+/*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 00:05:04 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/12 00:05:44 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 00:45:12 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,3 @@ int main(int ac, char **av, char **envp)
 		struct_initilaize(NULL, 0);
 	}
 }
-
-//noktalı virgül pipe gibi ayırılacak.

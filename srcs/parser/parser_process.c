@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segurbuz <segurbuz@student.42istanb>       +#+  +:+       +#+        */
+/*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/25 15:17:06 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/16 21:27:59 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,9 @@ void	ft_parse(void)
 	temp = temp->next;
 	free(tmp);
 	find_env_name(temp);
+	change_list(temp);
 	check_quot_list(temp);
 	g_data.list = temp;
-	test(&g_data.list);
+	//test(&g_data.list);
 	freelizer(&temp);
 }

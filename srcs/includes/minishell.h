@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segurbuz <segurbuz@student.42istanbul.co>  +#+  +:+       +#+        */
+/*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/09/12 06:29:51 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 01:23:34 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,23 @@
 
 typedef struct s_counter
 {
-	int	dollar;
 	int	rdr;
 	int	heredoc;
-	int	word;
 	int	pipe;
 }		t_counter;
+
+typedef struct s_list
+{
+	char			**content;
+	int				type;
+	struct s_list	*next;
+}					t_list;
 
 typedef struct s_data
 {
 	t_counter	*counter;
 	t_arg		*list;
+	t_list		*arg;
 	char		*line;
 	char		**envp;
 	char		**redirection;
@@ -57,10 +63,12 @@ int		is_check(char c);
 void	struct_initilaize(char **envp, int rule);
 bool	env_check(char const *str, char c, int rule);
 char	*env_find(char *path);
+void	test(t_arg **temp);
 void	check_quot_list(t_arg *temp);
 char	*env_add_dollars(char *str, char *path);
 int		env_control(char *str, int i);
 void	ft_error(char *str);
+void	change_list(t_arg *temp);
 void	find_env_name(t_arg *temp);
 
 #endif
