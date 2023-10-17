@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 01:23:34 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 04:09:13 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int		is_check(char c);
 void	struct_initilaize(char **envp, int rule);
 bool	env_check(char const *str, char c, int rule);
 char	*env_find(char *path);
-void	test(t_arg **temp);
 void	check_quot_list(t_arg *temp);
 char	*env_add_dollars(char *str, char *path);
 int		env_control(char *str, int i);
