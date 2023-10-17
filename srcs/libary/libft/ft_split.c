@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_extras.h"
+#include "libft.h"
 
 static size_t	ft_countchar(const char *s, char c, int opt_delimit)
 {

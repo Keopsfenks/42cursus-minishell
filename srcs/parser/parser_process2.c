@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:13:10 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 14:02:58 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:51:58 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int array_size(t_arg *temp)
 	return (i);
 }
 
-t_arg	*add_list(t_list **list, t_arg *tmp, int size)
+t_arg	*add_list(t_newlst **list, t_arg *tmp, int size)
 {
-	t_list	*arg;
+	t_newlst	*arg;
 	int		i;
 
 	i = -1;
@@ -47,11 +47,11 @@ t_arg	*add_list(t_list **list, t_arg *tmp, int size)
 
 void	change_list(t_arg *temp)
 {
-	t_list	*list;
-	t_list	*headlst;
+	t_newlst	*list;
+	t_newlst	*headlst;
 	int		size;
 
-	list = malloc (sizeof(t_list));
+	list = malloc (sizeof(t_newlst));
 	headlst = list;
 	
 	while (temp != NULL) 
@@ -61,7 +61,7 @@ void	change_list(t_arg *temp)
 		if (temp != NULL) 
 		{
 			temp = temp->next;
-			list->next = malloc(sizeof(t_list));
+			list->next = malloc(sizeof(t_newlst));
 			list = list->next;
 		}
 	}

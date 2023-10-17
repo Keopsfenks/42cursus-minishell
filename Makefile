@@ -2,6 +2,7 @@ SRCS = ./srcs/main.c \
 		./srcs/parser/parser_process.c \
 		./srcs/parser/parser_process2.c \
 		./srcs/parser/utils.c \
+		./srcs/parser/utilslibft.c \
 		./srcs/parser/error_check.c \
 		./srcs/parser/env_check.c \
 		./srcs/parser/trim_quot.c

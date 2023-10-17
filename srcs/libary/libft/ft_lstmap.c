@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_extras.h"
+#include "libft.h"
 
-t_arg	*ft_lstmap(t_arg *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_arg	*new;
-	t_arg	*tmp;
+	t_list	*new;
+	t_list	*tmp;
 
 	new = 0;
 	while (lst)

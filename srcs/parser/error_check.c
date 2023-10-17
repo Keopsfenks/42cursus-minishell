@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:50:02 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 15:54:23 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:43:48 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*error_check(t_arg *temp)
 			check = pipe_check(temp);
 		else if (temp->content[0] == '>' \
 			|| temp->content[0] == '<')
-			redirection_check(temp);
+			check = redirection_check(temp);
 		if (check == 1)
 			break ;
 		temp = temp->next;

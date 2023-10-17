@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 15:55:25 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:29:36 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 		{
 			if (ft_isprint(str[i - 1]) && (str[i - 1] != '|' \
 				&& str[i - 1] != '>' && str[i - 1] != '<'))
-				ft_lstadd_back(&temp, \
-				ft_lstnew(0, ft_substr(str, start, i - start)));
-			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, 1)));
+				ms_lstadd_back(&temp, \
+				ms_lstnew(0, ft_substr(str, start, i - start)));
+			ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, i, 1)));
 			start = i + 1;
 		}
 		else if (g_data.quot != 1 && (str[i] == '<' || str[i] == '>'))
@@ -37,9 +37,9 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 			if (str[i + 1] == '<' || str[i + 1] == '>')
 				counter = 2;
 			if (ft_isprint(str[i - 1]) && str[i - 1] != '|')
-				ft_lstadd_back(&temp, \
-				ft_lstnew(0, ft_substr(str, start, i - start)));
-			ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, i, counter)));
+				ms_lstadd_back(&temp, \
+				ms_lstnew(0, ft_substr(str, start, i - start)));
+			ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, i, counter)));
 			start = i + counter;
 			if (counter == 2)
 				i++;
@@ -49,7 +49,7 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 	if (str[ft_strlen(str) - 1] != '|'
 		&& str[ft_strlen(str) - 1] != '>' \
 		&& str[ft_strlen(str) - 1] != '<')
-		ft_lstadd_back(&temp, ft_lstnew(0, ft_substr(str, start, i - start)));
+		ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, start, i - start)));
 	free(str);
 }
 
@@ -114,7 +114,7 @@ void	ft_parse(void)
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
 	split_line(temp, ft_strtrim(g_data.line, " "));
-	ft_lstadd_back(&temp, NULL);
+	ms_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
 	error_check(temp);

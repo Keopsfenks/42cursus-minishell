@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft_extras.h"
+#include"libft.h"
 
-void	ft_lstclear(t_arg **lst, void (*del)(void *))
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_arg	*tmp;
+	t_list	*tmp;
 
 	while (*lst && lst)
 	{

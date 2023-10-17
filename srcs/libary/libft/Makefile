@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ogenc <ogenc@student.42.fr>                +#+  +:+       +#+         #
+#    By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/09 22:54:12 by ogenc             #+#    #+#              #
-#    Updated: 2023/01/02 15:16:17 by ogenc            ###   ########.fr        #
+#    Updated: 2023/10/17 17:32:09 by segurbuz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ list = ft_isalpha.c 		\
 		ft_atoi.c 			\
 		ft_strdup.c 		\
 		ft_substr.c 		\
-		ft_strjoin.c 		\
+		ms_strjoin.c 		\
 		ft_strtrim.c 		\
 		ft_itoa.c 			\
 		ft_split.c 			\

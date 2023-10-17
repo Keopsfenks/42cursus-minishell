@@ -6,14 +6,14 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 15:50:41 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:31:53 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libary/libft/libft_extras.h"
+# include "../libary/libft/libft.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -34,18 +34,25 @@ typedef struct s_counter
 	int	pipe;
 }		t_counter;
 
-typedef struct s_list
+typedef struct s_arg
+{
+	char			*content;
+	int				type;
+	struct s_arg	*next;
+}					t_arg;
+
+typedef struct s_newlst
 {
 	char			**content;
 	int				type;
-	struct s_list	*next;
-}					t_list;
+	struct s_newlst	*next;
+}					t_newlst;
 
 typedef struct s_data
 {
 	t_counter	*counter;
 	t_arg		*list;
-	t_list		*arg;
+	t_newlst	*arg;
 	char		*line;
 	char		**envp;
 	char		**redirection;
@@ -71,5 +78,9 @@ void	change_list(t_arg *temp);
 void	find_env_name(t_arg *temp);
 void	parse_error(int error_code);
 void	*error_check(t_arg *temp);
+t_arg	*ms_lstnew(int type, void *content);
+void	ms_lstadd_back(t_arg **lst, t_arg *new);
+t_arg	*ms_lstlast(t_arg *lst);
+char	*ms_strjoin(char *s1, char *s2);
 
 #endif
