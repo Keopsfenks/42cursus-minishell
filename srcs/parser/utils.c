@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 01:04:15 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 04:17:36 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:51:13 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	env_control(char *str, int i)
 	return (i);
 }
 
-void	parse_error(t_arg *tmp)
+void	parse_error(int error_code)
 {
-	(void)tmp;
+	g_data.error_flag = -1;
+	g_data.error_code = error_code;
 }

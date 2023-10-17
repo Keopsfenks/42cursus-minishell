@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:13:10 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 11:22:30 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 14:02:58 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,26 @@ t_arg	*add_list(t_list **list, t_arg *tmp, int size)
 	return (tmp);
 }
 
-void change_list(t_arg *temp) 
+void	change_list(t_arg *temp)
 {
-    t_list	*list;
-    t_list	*headlst;
-    int		size;
+	t_list	*list;
+	t_list	*headlst;
+	int		size;
 
-    list = malloc (sizeof(t_list));
+	list = malloc (sizeof(t_list));
 	headlst = list;
-
-    while (temp != NULL) 
+	
+	while (temp != NULL) 
 	{
-        size = array_size(temp);
-        temp = add_list(&list, temp, size);
-        if (temp != NULL) 
+		size = array_size(temp);
+		temp = add_list(&list, temp, size);
+		if (temp != NULL) 
 		{
-            temp = temp->next;
-            list->next = malloc(sizeof(t_list));
-            list = list->next;
-        }
-    }
+			temp = temp->next;
+			list->next = malloc(sizeof(t_list));
+			list = list->next;
+		}
+	}
 	list->next = NULL;
 	g_data.arg = headlst;
 	free(list);

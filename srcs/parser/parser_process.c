@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 11:21:01 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:55:25 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,28 @@ void	split_line(t_arg *temp, char *str)
 	free(str);
 }
 
-void	test(t_arg **temp)
-{
-	t_arg	*tmp;
+// void	test(t_arg **temp)
+// {
+// 	t_arg	*tmp;
 
-	tmp = *temp;
-	while (tmp != NULL)
-	{
-		printf("list: %s;\n", tmp->content);
-		tmp = tmp->next;
-	}
-}
+// 	tmp = *temp;
+// 	while (tmp != NULL)
+// 	{
+// 		printf("list: %s;\n", tmp->content);
+// 		tmp = tmp->next;
+// 	}
+// }
 
-void test2(void)
-{
-	for (size_t i = 0; g_data.arg != NULL; i++)
-	{
-		for (size_t i = 0; g_data.arg->content[i]; i++)
-			printf("%s ", g_data.arg->content[i]);
-		printf("\n");
-		g_data.arg = g_data.arg->next;
-	}
-	
-}
+// void test2(void)
+// {
+// 	for (size_t i = 0; g_data.arg != NULL; i++)
+// 	{
+// 		for (size_t i = 0; g_data.arg->content[i]; i++)
+// 			printf("%s ", g_data.arg->content[i]);
+// 		printf("\n");
+// 		g_data.arg = g_data.arg->next;
+// 	}
+// }
 
 void	ft_parse(void)
 {
@@ -115,6 +114,10 @@ void	ft_parse(void)
 	temp = malloc(sizeof(t_arg));
 	temp->next = NULL;
 	split_line(temp, ft_strtrim(g_data.line, " "));
+	ft_lstadd_back(&temp, NULL);
+	tmp = temp;
+	temp = temp->next;
+	error_check(temp);
 	if (g_data.error_flag != 0)
 	{
 		printf("HATA\n");
@@ -123,15 +126,10 @@ void	ft_parse(void)
 		return ;
 	}
 	struct_initilaize(NULL, 0);
-	ft_lstadd_back(&temp, NULL);
-	tmp = temp;
-	temp = temp->next;
 	free(tmp);
 	find_env_name(temp);
 	change_list(temp);
-	test2();
 	check_quot_list(temp);
 	g_data.list = temp;
-	//test(&g_data.list);
 	//freelizer(&temp);
 }

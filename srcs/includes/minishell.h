@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 04:09:13 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:50:41 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,7 @@ int		env_control(char *str, int i);
 void	ft_error(char *str);
 void	change_list(t_arg *temp);
 void	find_env_name(t_arg *temp);
+void	parse_error(int error_code);
+void	*error_check(t_arg *temp);
 
 #endif
