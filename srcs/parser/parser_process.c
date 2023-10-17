@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 17:29:36 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:22:54 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,17 @@ void	split_line(t_arg *temp, char *str)
 	free(str);
 }
 
-// void	test(t_arg **temp)
-// {
-// 	t_arg	*tmp;
+void	test(t_arg **temp)
+{
+	t_arg	*tmp;
 
-// 	tmp = *temp;
-// 	while (tmp != NULL)
-// 	{
-// 		printf("list: %s;\n", tmp->content);
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = *temp;
+	while (tmp != NULL)
+	{
+		printf("list: %s;\n", tmp->content);
+		tmp = tmp->next;
+	}
+}
 
 // void test2(void)
 // {
@@ -128,8 +128,9 @@ void	ft_parse(void)
 	struct_initilaize(NULL, 0);
 	free(tmp);
 	find_env_name(temp);
-	change_list(temp);
 	check_quot_list(temp);
+	change_list(temp);
 	g_data.list = temp;
+	//test(&g_data.list);
 	//freelizer(&temp);
 }

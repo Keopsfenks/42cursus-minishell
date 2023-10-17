@@ -6,7 +6,7 @@
 #    By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/09 22:54:12 by ogenc             #+#    #+#              #
-#    Updated: 2023/10/17 17:32:09 by segurbuz         ###   ########.fr        #
+#    Updated: 2023/10/17 17:50:17 by segurbuz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ list = ft_isalpha.c 		\
 		ft_atoi.c 			\
 		ft_strdup.c 		\
 		ft_substr.c 		\
-		ms_strjoin.c 		\
+		ft_strjoin.c 		\
 		ft_strtrim.c 		\
 		ft_itoa.c 			\
 		ft_split.c 			\

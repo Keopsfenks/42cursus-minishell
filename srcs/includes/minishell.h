@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 17:31:53 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:22:13 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ typedef struct s_newlst
 	struct s_newlst	*next;
 }					t_newlst;
 
+typedef struct s_exec
+{
+	char	**env_p;
+	char 	*path;
+}	t_exec;
+
 typedef struct s_data
 {
 	t_counter	*counter;
@@ -55,6 +61,7 @@ typedef struct s_data
 	t_newlst	*arg;
 	char		*line;
 	char		**envp;
+	char		*path;
 	char		**redirection;
 	int			error_flag;
 	int			error_code;
