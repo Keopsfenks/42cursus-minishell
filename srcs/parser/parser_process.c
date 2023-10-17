@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 09:46:50 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:21:01 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,18 @@ void	test(t_arg **temp)
 	}
 }
 
+void test2(void)
+{
+	for (size_t i = 0; g_data.arg != NULL; i++)
+	{
+		for (size_t i = 0; g_data.arg->content[i]; i++)
+			printf("%s ", g_data.arg->content[i]);
+		printf("\n");
+		g_data.arg = g_data.arg->next;
+	}
+	
+}
+
 void	ft_parse(void)
 {
 	t_arg	*temp;
@@ -117,9 +129,7 @@ void	ft_parse(void)
 	free(tmp);
 	find_env_name(temp);
 	change_list(temp);
-	printf("%s\n", g_data.arg->content[0]);
-	g_data.arg = g_data.arg->next;
-	printf("%s\n", g_data.arg->content[0]);
+	test2();
 	check_quot_list(temp);
 	g_data.list = temp;
 	//test(&g_data.list);

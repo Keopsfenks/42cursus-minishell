@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:13:10 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 09:45:33 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:22:30 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ void change_list(t_arg *temp)
             list = list->next;
         }
     }
+	list->next = NULL;
 	g_data.arg = headlst;
+	free(list);
 }
 
 // echo semih gurbuz | grep semih
