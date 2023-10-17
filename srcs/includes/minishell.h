@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 19:22:13 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 23:50:05 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,20 @@
 # include <string.h>
 # include <stdbool.h>
 
+enum	character {
+	WORD,
+    INPUT_RDR,
+    OUTPUT_RDR,
+    DOUBLE_OUTPUT_RDR,
+    DOUBLE_INPUT_RDR,
+    PIPE,
+};
 typedef struct s_counter
 {
 	int	rdr;
 	int	heredoc;
 	int	pipe;
+	int	word;
 }		t_counter;
 
 typedef struct s_arg
@@ -89,5 +98,6 @@ t_arg	*ms_lstnew(int type, void *content);
 void	ms_lstadd_back(t_arg **lst, t_arg *new);
 t_arg	*ms_lstlast(t_arg *lst);
 char	*ms_strjoin(char *s1, char *s2);
+void	make_sense(t_arg **list);
 
 #endif

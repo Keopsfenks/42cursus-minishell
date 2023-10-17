@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 19:22:54 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/17 23:51:38 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,31 @@ void	test(t_arg **temp)
 	tmp = *temp;
 	while (tmp != NULL)
 	{
-		printf("list: %s;\n", tmp->content);
+		printf("list: %s -> %d;\n",tmp->content , tmp->type);
 		tmp = tmp->next;
 	}
 }
 
-// void test2(void)
-// {
-// 	for (size_t i = 0; g_data.arg != NULL; i++)
-// 	{
-// 		for (size_t i = 0; g_data.arg->content[i]; i++)
-// 			printf("%s ", g_data.arg->content[i]);
-// 		printf("\n");
-// 		g_data.arg = g_data.arg->next;
-// 	}
-// }
+void	type_counter(t_arg	**lst)
+{
+	t_arg	*list;
+
+	list = *lst;
+	g_data.counter = ft_calloc(sizeof(t_counter), 1);
+	while (list != NULL)
+	{
+		if (list->type == INPUT_RDR || list->type == OUTPUT_RDR
+				|| list->type == DOUBLE_OUTPUT_RDR)
+			g_data.counter->rdr++;
+		else if (list->type == WORD)
+			g_data.counter->word++;
+		else if (list->type == DOUBLE_INPUT_RDR)
+			g_data.counter->heredoc++;
+		else if (list->type == PIPE)
+			g_data.counter->pipe++;
+		list = list->next;
+	}
+}
 
 void	ft_parse(void)
 {
@@ -128,9 +138,10 @@ void	ft_parse(void)
 	struct_initilaize(NULL, 0);
 	free(tmp);
 	find_env_name(temp);
+	make_sense(&temp);
+	type_counter(&temp);
 	check_quot_list(temp);
 	change_list(temp);
 	g_data.list = temp;
-	//test(&g_data.list);
 	//freelizer(&temp);
 }

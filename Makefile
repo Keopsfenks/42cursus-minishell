@@ -5,7 +5,8 @@ SRCS = ./srcs/main.c \
 		./srcs/parser/utilslibft.c \
 		./srcs/parser/error_check.c \
 		./srcs/parser/env_check.c \
-		./srcs/parser/trim_quot.c
+		./srcs/parser/trim_quot.c \
+		./srcs/lexer/make_sense.c
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -lreadline -g
