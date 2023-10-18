@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 18:38:56 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 17:32:09 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:54:33 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	*env_add_dollars(char *str, char *path)
 	}
 	new_str = ms_strjoin(str_start, path);
 	new_str = ms_strjoin(new_str, str_end);
+	free(str);
 	return (free(str_end), new_str);
 }
 

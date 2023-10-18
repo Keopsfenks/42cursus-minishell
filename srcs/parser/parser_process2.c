@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:13:10 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 16:51:58 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:02:46 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	change_list(t_arg *temp)
 
 	list = malloc (sizeof(t_newlst));
 	headlst = list;
-	
 	while (temp != NULL) 
 	{
 		size = array_size(temp);

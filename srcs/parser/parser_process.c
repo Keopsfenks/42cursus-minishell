@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/17 23:51:38 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:05:03 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,21 +127,20 @@ void	ft_parse(void)
 	ms_lstadd_back(&temp, NULL);
 	tmp = temp;
 	temp = temp->next;
+	free(tmp);
 	error_check(temp);
+	make_sense(&temp);
+	type_counter(&temp);
 	if (g_data.error_flag != 0)
 	{
 		printf("HATA\n");
-		g_data.error_code = 127;
-		free(temp);
+		freelizer(&temp);
 		return ;
 	}
 	struct_initilaize(NULL, 0);
-	free(tmp);
 	find_env_name(temp);
-	make_sense(&temp);
-	type_counter(&temp);
 	check_quot_list(temp);
-	change_list(temp);
+	change_list(temp); // leak var
 	g_data.list = temp;
-	//freelizer(&temp);
+	//freelizer(&temp); //leak çözüyor ama segment yediriyor.
 }
