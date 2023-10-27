@@ -1,4 +1,6 @@
 SRCS = ./srcs/main.c \
+		./srcs/heredoc.c \
+		./srcs/redirections.c \
 		./srcs/parser/parser_process.c \
 		./srcs/parser/parser_process2.c \
 		./srcs/parser/utils.c \
