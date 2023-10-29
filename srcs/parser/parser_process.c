@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/27 17:49:05 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/29 22:33:59 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	ft_parse(void)
 	tmp = temp;
 	temp = temp->next;
 	free(tmp);
-	error_check(temp);
+	//error_check(temp);
 	make_sense(&temp);
 	type_counter(&temp);
 	if (g_data.error_flag != 0)

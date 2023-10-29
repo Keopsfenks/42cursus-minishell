@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/28 01:48:39 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/29 22:35:59 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,8 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	
 	while (total_pipe >= 0)
 	{
+        ft_exec_rdr(&g_data.arg);
+        change_output_or_input();
 		pipe(g_data.fd);
 		pid = fork();
 		if (!pid)
@@ -346,7 +348,7 @@ void	set_envp(t_exec *data, char **envp)
 	int i = 0;
 	while(envp[i])
 		i++;
-	data->env_p = malloc(sizeof(char *) * i + 1);
+	data->env_p = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (envp[i])
 	{
@@ -354,6 +356,20 @@ void	set_envp(t_exec *data, char **envp)
 		i++;
 	}
 	data->env_p[i] = NULL;
+}
+
+void    change_output_or_input(void)
+{
+    if (g_data.fdout == 1)
+    {
+        dup2(g_data.out_fd, 1);
+        close(g_data.out_fd);
+    }
+    if (g_data.fdin == 1)
+    {
+        dup2(g_data.in_fd, 0);
+        close(g_data.in_fd);
+    }
 }
 
 int	main (int argc, char **argv, char **env)
@@ -379,6 +395,7 @@ int	main (int argc, char **argv, char **env)
 		{
 			commands = g_data.arg->content;
             ft_exec_rdr(&g_data.arg);
+            change_output_or_input();
 			if (ft_strcmp(commands[0], "exit") == 0) // exit
 			{
 				printf("\033[31mExiting minishell...\033[0m\n");
@@ -411,8 +428,8 @@ int	main (int argc, char **argv, char **env)
 				pid = fork();
 				if (pid == 0)
 				{
-					if (execve(data->path, commands, data->env_p) == -1)
-						perror("Invalid command");
+					if (execve(data->path, commands + g_data.exec_check, data->env_p) == -1)
+						perror("Invalid command");   
 					exit(1);
 				}
 				else
@@ -437,6 +454,7 @@ void	struct_initilaize(char **envp, int rule)
 	g_data.quot_type = 1000;
     g_data.fdin = 0;
     g_data.fdout = 0;
+    g_data.exec_check = 0;
     dup2(g_data.default_in, 0);
     dup2(g_data.default_out, 1);
 }

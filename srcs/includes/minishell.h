@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/28 01:53:46 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/29 22:26:49 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 	int			quot_type;
     int         default_in;
     int         default_out;
+    int         exec_check;
 }				t_data;
 
 t_data	g_data;
@@ -113,5 +114,6 @@ char	*ft_join_m(t_exec *data, char **commands);
 void	free_commands(char **commands);
 void	double_input_rdr(t_newlst *tmp, int i);
 int	    ft_strcmp(char *s1, char *s2);
+void    change_output_or_input(void);
 
 #endif
