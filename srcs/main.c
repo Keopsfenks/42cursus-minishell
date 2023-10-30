@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/29 22:35:59 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 04:34:24 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_strcmp(char *s1, char *s2)
 {
+	if (!s1 || !s2)
+		return (-1);
 	while (*s1 && *s2)
 	{
 		if (*s1 != *s2)
@@ -272,7 +274,7 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	
 	while (total_pipe >= 0)
 	{
-        ft_exec_rdr(&g_data.arg);
+        ft_exec_rdr(&tmp);
         change_output_or_input();
 		pipe(g_data.fd);
 		pid = fork();
@@ -374,12 +376,13 @@ void    change_output_or_input(void)
 
 int	main (int argc, char **argv, char **env)
 {
-	char	**commands;
 	int		pid;
 	t_exec	*data;
 
 	(void)argv;
 	(void)argc;
+	
+	struct_initilaize(NULL, 1);
 	data = malloc(sizeof(data));
 	envp_copy(env);
 	set_envp(data, env);
@@ -393,42 +396,41 @@ int	main (int argc, char **argv, char **env)
 		ft_parse();
 		if (!(ft_strncmp(g_data.line, "\0", 1) == 0) && g_data.error_flag == 0)
 		{
-			commands = g_data.arg->content;
             ft_exec_rdr(&g_data.arg);
             change_output_or_input();
-			if (ft_strcmp(commands[0], "exit") == 0) // exit
+			if (ft_strcmp(g_data.arg->content[0], "exit") == 0) // exit
 			{
 				printf("\033[31mExiting minishell...\033[0m\n");
-				free_commands(commands);
+				free_commands(g_data.arg->content);
 				free(g_data.line);
 				free(data);
 				exit(0);
 			}
 			else if (g_data.counter->pipe > 0)
-				ft_exec_w_pipes(data, commands);
-			else if (ft_strcmp(commands[0], "cd") == 0) // cd komutuna özel 
+				ft_exec_w_pipes(data, g_data.arg->content);
+			else if (ft_strcmp(g_data.arg->content[0], "cd") == 0) // cd komutuna özel 
 			{
-				if (commands[1])
-					if (ft_change_dir(data, commands[1]) == -1)
-						printf("\033[31mcd: no such file or directory: %s\033[0m\n", commands[1]);
+				if (g_data.arg->content[1])
+					if (ft_change_dir(data, g_data.arg->content[1]) == -1)
+						printf("\033[31mcd: no such file or directory: %s\033[0m\n", g_data.arg->content[1]);
 			}
-			else if (!(ft_strcmp(commands[0], "echo")))
-				ft_echo(commands);
-			else if (!(ft_strcmp(commands[0], "pwd"))) // pwd
-				ft_pwd(commands, data);
-			else if (!(ft_strcmp(commands[0], "export")))
-				ft_export(data, commands);
-			else if (!(ft_strcmp(commands[0], "unset")))
-				ft_unset(data, commands);
-			else if (!(ft_strcmp(commands[0], "env")))
+			else if (!(ft_strcmp(g_data.arg->content[0], "echo")))
+				ft_echo(g_data.arg->content);
+			else if (!(ft_strcmp(g_data.arg->content[0], "pwd"))) // pwd
+				ft_pwd(g_data.arg->content, data);
+			else if (!(ft_strcmp(g_data.arg->content[0], "export")))
+				ft_export(data, g_data.arg->content);
+			else if (!(ft_strcmp(g_data.arg->content[0], "unset")))
+				ft_unset(data, g_data.arg->content);
+			else if (!(ft_strcmp(g_data.arg->content[0], "env")))
 				ft_p_env(data);
 			else
 			{
-				data->path = ft_join_m(data, commands);
+				data->path = ft_join_m(data, g_data.arg->content);
 				pid = fork();
 				if (pid == 0)
 				{
-					if (execve(data->path, commands + g_data.exec_check, data->env_p) == -1)
+					if (execve(data->path, g_data.arg->content, data->env_p) == -1)
 						perror("Invalid command");   
 					exit(1);
 				}

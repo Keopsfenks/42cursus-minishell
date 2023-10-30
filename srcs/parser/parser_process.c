@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/29 22:33:59 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 02:50:49 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,19 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 		else if (g_data.quot != 1 && (str[i] == '<' || str[i] == '>'))
 		{
 			if (str[i + 1] == '<' || str[i + 1] == '>')
-				counter = 2;
+			{
+				if (str[i + 2] == '<' || str[i + 2] == '>')
+					counter = 3;
+				else
+					counter = 2;
+			}
 			if (ft_isprint(str[i - 1]) && str[i - 1] != '|')
 				ms_lstadd_back(&temp, \
 				ms_lstnew(0, ft_substr(str, start, i - start)));
 			ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, i, counter)));
 			start = i + counter;
-			if (counter == 2)
-				i++;
+			if (counter == 2 || counter == 3)
+				i += counter - 1;
 			counter = 1;
 		}
 	}
@@ -128,10 +133,10 @@ void	ft_parse(void)
 	tmp = temp;
 	temp = temp->next;
 	free(tmp);
-	//error_check(temp);
+	error_check(temp);
 	make_sense(&temp);
 	type_counter(&temp);
-	if (g_data.error_flag != 0)
+	if (g_data.error_flag != 0 || temp == NULL)
 	{
 		printf("HATA\n");
 		freelizer(&temp, NULL);
@@ -140,8 +145,7 @@ void	ft_parse(void)
 	struct_initilaize(NULL, 0);
 	find_env_name(temp);
 	check_quot_list(temp);
-	change_list(temp); // leak var
+	change_list(temp);
 	g_data.list = temp;
     //test(&g_data.list);
-	//freelizer(&temp); //leak çözüyor ama segment yediriyor.
 }

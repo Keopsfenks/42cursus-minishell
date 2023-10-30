@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:13:10 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/26 01:44:51 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 00:38:51 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,15 @@ void	make_sense2(t_newlst **tmp)
 	list = *tmp;
 	while (list != NULL)
 	{
-		i = -1;
-		while (list->content[++i] != NULL)
+		i = 0;
+		while (list->content[i] != NULL)
 		{
 			if (*list->content[i] == '<'
 				|| *list->content[i] == '>')
 				list->type[i] = initialize_lexer2(list->content[i]);
 			else
 				list->type[i] = WORD;
+			i++;
 		}
 		list = list->next;
 	}
@@ -104,8 +105,11 @@ void	change_list(t_arg *temp)
 		if (temp != NULL) 
 		{
 			temp = temp->next;
-			list->next = malloc(sizeof(t_newlst));
-			list = list->next;
+			if (temp)
+			{
+				list->next = malloc(sizeof(t_newlst));
+				list = list->next;
+			}
 		}
 	}
 	list->next = NULL;

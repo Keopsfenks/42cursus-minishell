@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/29 22:26:49 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 02:36:25 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ t_arg	*ms_lstnew(int type, void *content);
 void	ms_lstadd_back(t_arg **lst, t_arg *new);
 t_arg	*ms_lstlast(t_arg *lst);
 char	*ms_strjoin(char *s1, char *s2);
+int		ms_lstsize(t_arg *lst);
 void	make_sense(t_arg **list);
 void	ft_exec_rdr(t_newlst **list);
 char	*ft_join_m(t_exec *data, char **commands);
