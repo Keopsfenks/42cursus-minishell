@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/30 15:56:38 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 23:13:36 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,14 +271,9 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	total_pipe = g_data.counter->pipe;
 	total_exec = total_pipe + 1;
 	(void)commands;
-	
+
 	while (total_pipe >= 0)
 	{
-		if (tmp->list_type != WORD)
-		{
-			ft_exec_rdr(&tmp);
-			change_output_or_input();
-		}
 		pipe(g_data.fd);
 		pid = fork();
 		if (!pid)
@@ -288,7 +283,12 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 			if (total_pipe - 1 != -1)
 				dup2(g_data.fd[1], 1);
 			close(g_data.fd[0]);
-			close(g_data.fd[1]); 
+			close(g_data.fd[1]);
+			if (tmp->list_type != WORD)
+			{
+				ft_exec_rdr(&tmp);
+				change_output_or_input();
+			} 
 			// if is builtin
 			if (tmp->content[0] != NULL)
 				execve(data->path, tmp->content, data->env_p);
@@ -400,7 +400,7 @@ int	main (int argc, char **argv, char **env)
 		ft_parse();
 		if (!(ft_strncmp(g_data.line, "\0", 1) == 0) && g_data.error_flag == 0)
 		{
-			if (g_data.arg->list_type != WORD)
+			if (g_data.arg->list_type != WORD && g_data.counter->pipe < 1)
 			{
 				ft_exec_rdr(&g_data.arg);
 				change_output_or_input();
