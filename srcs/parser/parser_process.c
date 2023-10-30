@@ -6,11 +6,43 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 02:50:49 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:53:36 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_oparators(char *str, int i, int oparator, int rule)
+{
+	int	check;
+
+	check = 0;
+	if (i > 0)
+		check = 1;
+	if (rule == 0)
+	{
+		if (str[i - check] != oparator)
+			return (1);
+	}
+	else if (rule == 1)
+	{
+		if (str[i - check] == oparator)
+			return (1);
+	}
+	return (0);
+}
+
+int	ms_isprint(char *str, int i)
+{
+	int	check;
+
+	check = 0;
+	if (i > 0)
+		check = 1;
+	if (str[i - check] >= 32 && str[i - check] <= 126)
+		return (1);
+	return (0);
+}
 
 void	splitting_to_add_list(t_arg *temp, char *str)
 {
@@ -25,8 +57,8 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 	{
 		if (is_check(str[i]) != 1 && str[i] == '|')
 		{
-			if (ft_isprint(str[i - 1]) && (str[i - 1] != '|' \
-				&& str[i - 1] != '>' && str[i - 1] != '<'))
+			if (ms_isprint(str, i) && (is_oparators(str, i, '|', 0) \
+				&& is_oparators(str, i, '>', 0) && is_oparators(str, i, '<', 0)))
 				ms_lstadd_back(&temp, \
 				ms_lstnew(0, ft_substr(str, start, i - start)));
 			ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, i, 1)));
@@ -41,7 +73,8 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 				else
 					counter = 2;
 			}
-			if (ft_isprint(str[i - 1]) && str[i - 1] != '|')
+			if (ms_isprint(str, i) && (is_oparators(str, i, '|', 0) \
+				&& is_oparators(str, i, '>', 0) && is_oparators(str, i, '<', 0)))
 				ms_lstadd_back(&temp, \
 				ms_lstnew(0, ft_substr(str, start, i - start)));
 			ms_lstadd_back(&temp, ms_lstnew(0, ft_substr(str, i, counter)));
@@ -62,27 +95,25 @@ void	split_line(t_arg *temp, char *str)
 {
 	int	i;
 	int	start;
-
-	i = -1;
+	int check;
+	
 	start = 0;
-	while (++i || 1)
+	i = 0;
+	check = 0;
+	while (str[++i - 1] != '\0')
 	{
-		if (is_check(str[i]) != 1 && (!str[i] || str[i] == ' ') \
-		&& !(ft_strlen(str) < 1))
+		if (is_check(str[i]) != 1 && check == 0 && (str[i] == ' ' || !ft_isprint(str[i])))
 		{
 			splitting_to_add_list(temp, ft_substr(str, start, i - start));
-			while (str[i] == ' ' || !str[i])
-				i++;
-			i--;
 			start = i + 1;
+			check = 1;
 		}
 		else if (str[i] == '#')
 			return ;
-		if (str[i] == '\0')
+		else if(check == 1 && ft_isprint(str[i]))
 		{
-			if (g_data.quot == 1)
-				g_data.error_flag = -1;
-			break ;
+			start = i;
+			check = 0;
 		}
 	}
 	free(str);
@@ -133,7 +164,7 @@ void	ft_parse(void)
 	tmp = temp;
 	temp = temp->next;
 	free(tmp);
-	error_check(temp);
+	//error_check(temp);
 	make_sense(&temp);
 	type_counter(&temp);
 	if (g_data.error_flag != 0 || temp == NULL)
@@ -147,5 +178,4 @@ void	ft_parse(void)
 	check_quot_list(temp);
 	change_list(temp);
 	g_data.list = temp;
-    //test(&g_data.list);
 }

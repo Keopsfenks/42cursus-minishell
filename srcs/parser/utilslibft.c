@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:45:52 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/29 23:19:37 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 05:49:41 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_arg	*ms_lstnew(int type, void *content)
 {
 	t_arg	*lst;
 
-	lst = malloc(sizeof(t_arg));
+	lst = ft_calloc(sizeof(t_arg), 1);
 	if (!lst)
 		return (NULL);
 	lst->content = content;

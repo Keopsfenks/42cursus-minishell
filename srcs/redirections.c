@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:10:55 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 04:33:40 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:08:40 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ char	**change_newlst(t_newlst *tmp, int count)
 
 	i = -1;
 	lenght = 0;
-	while (tmp->content[count + lenght])
+	while (tmp->content[lenght])
 		lenght++;
+	lenght -= count;
 	new_str = malloc(sizeof (char *) * (lenght + 1));
 	while (++i < lenght)
 		new_str[i] = ft_strdup(tmp->content[count + i]);
@@ -64,6 +65,8 @@ char	**change_newlst(t_newlst *tmp, int count)
 
 void    select_rdr_type(t_newlst *tmp, int i)
 {
+	if (i != 0)
+		tmp->content[i] = NULL;
 	if (tmp->type[i] == OUTPUT_RDR)
 		output_rdr(tmp, i);
 	else if (tmp->type[i] == DOUBLE_OUTPUT_RDR)
@@ -72,10 +75,6 @@ void    select_rdr_type(t_newlst *tmp, int i)
 		input_rdr(tmp, i);
 	else if (tmp->type[i] == DOUBLE_INPUT_RDR)
 		double_input_rdr(tmp, i);
-	if (i == 0)
-		tmp->content = change_newlst(tmp, last_rdr_check(tmp, i));
-	else
-		tmp->content[i] = NULL;
 }
 
 void	ft_exec_rdr(t_newlst **list)
@@ -95,6 +94,8 @@ void	ft_exec_rdr(t_newlst **list)
 				i++;
 			}
 		}
+		if (tmp->type[0] != WORD)
+			tmp->content = change_newlst(tmp, last_rdr_check(tmp, 0));
 		tmp = tmp->next;
 	}
 }

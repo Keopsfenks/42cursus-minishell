@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 02:36:25 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:01:47 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	ft_error(char *str);
 void	change_list(t_arg *temp);
 void	find_env_name(t_arg *temp);
 void	parse_error(int error_code);
+int	is_oparators(char *str, int i, int oparator, int rule);
 void	*error_check(t_arg *temp);
 t_arg	*ms_lstnew(int type, void *content);
 void	ms_lstadd_back(t_arg **lst, t_arg *new);

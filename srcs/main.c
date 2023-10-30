@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/30 04:34:24 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:05:03 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,13 +384,13 @@ int	main (int argc, char **argv, char **env)
 	
 	struct_initilaize(NULL, 1);
 	data = malloc(sizeof(data));
-	envp_copy(env);
 	set_envp(data, env);
+	g_data.envp = data->env_p;
     g_data.default_in = dup(0);
     g_data.default_out = dup(1);
 	while (1)
 	{
-		g_data.line = readline("minishell$ ");
+ 		g_data.line = readline("minishell$ ");
 		if (ft_strncmp(g_data.line, "", ft_strlen(g_data.line)) != 0) // add history
 			add_history(g_data.line);
 		ft_parse();
@@ -424,7 +424,7 @@ int	main (int argc, char **argv, char **env)
 				ft_unset(data, g_data.arg->content);
 			else if (!(ft_strcmp(g_data.arg->content[0], "env")))
 				ft_p_env(data);
-			else
+			else if (g_data.arg->content)
 			{
 				data->path = ft_join_m(data, g_data.arg->content);
 				pid = fork();

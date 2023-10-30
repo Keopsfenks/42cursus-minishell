@@ -1,11 +1,11 @@
 {
-    "lldb.displayFormat": "auto",
-    "lldb.showDisassembly": "auto",
+    "lldb.showDisassembly": "always",
     "lldb.dereferencePointers": true,
-    "lldb.consoleMode": "commands",
+    "lldb.consoleMode": "evaluate",
     "files.associations": {
         "sstream": "c",
         "minishell.h": "c",
         "unistd.h": "c"
-    }
+    },
+    "lldb.displayFormat": "auto"
 }

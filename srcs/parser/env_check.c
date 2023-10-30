@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 18:38:56 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/18 12:54:33 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:51:06 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	find_env_name(t_arg *temp)
 			while (temp->content[++i] != '\0')
 			{
 				is_check(temp->content[i]);
-				if (g_data.quot_type != '\'' && temp->content[i - 1] == '$')
+				if (g_data.quot_type != '\'' && i > 0 && temp->content[i - 1] == '$')
 				{
 					len = 1;
 					while (len++ && env_check(NULL, temp->content[i], 1))
