@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:10:55 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 15:31:14 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:59:28 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,17 @@ char	**change_newlst(t_newlst *tmp, int count, int check)
 		while (tmp->content[lenght])
 			lenght++;
 		lenght -= count;
-		new_str = ft_calloc(sizeof (char *), (lenght + 1));
+		new_str = ft_calloc(sizeof (char *), (lenght + 2));
 		while (++i < lenght)
 			new_str[i] = ft_strdup(tmp->content[count + i]);
-		new_str[lenght] = NULL;
+		new_str[lenght + 1] = NULL;
 	}
 	else if (check == 0)
 	{
-		new_str = ft_calloc(sizeof (char *), (count + 1));
+		new_str = ft_calloc(sizeof (char *), (count + 2));
 		while (++i < count)
 			new_str[i] = ft_strdup(tmp->content[i]);
-		new_str[count] = NULL;
+		new_str[count + 1] = NULL;
 	}
 	return (free_commands(tmp->content), new_str);
 }

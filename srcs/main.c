@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/30 14:44:16 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:56:38 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,8 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 			close(g_data.fd[0]);
 			close(g_data.fd[1]); 
 			// if is builtin
-			execve(data->path, tmp->content, data->env_p);
+			if (tmp->content[0] != NULL)
+				execve(data->path, tmp->content, data->env_p);
 			perror("Invalid command");
 			exit(1);
 		}
@@ -430,7 +431,7 @@ int	main (int argc, char **argv, char **env)
 				ft_unset(data, g_data.arg->content);
 			else if (!(ft_strcmp(g_data.arg->content[0], "env")))
 				ft_p_env(data);
-			else if (g_data.arg->content)
+			else if (g_data.arg->content[0])
 			{
 				data->path = ft_join_m(data, g_data.arg->content);
 				pid = fork();
