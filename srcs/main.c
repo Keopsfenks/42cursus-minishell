@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/30 13:05:03 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:44:16 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,8 +274,11 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	
 	while (total_pipe >= 0)
 	{
-        ft_exec_rdr(&tmp);
-        change_output_or_input();
+		if (tmp->list_type != WORD)
+		{
+			ft_exec_rdr(&tmp);
+			change_output_or_input();
+		}
 		pipe(g_data.fd);
 		pid = fork();
 		if (!pid)
@@ -383,7 +386,7 @@ int	main (int argc, char **argv, char **env)
 	(void)argc;
 	
 	struct_initilaize(NULL, 1);
-	data = malloc(sizeof(data));
+	data = malloc(sizeof(t_exec));
 	set_envp(data, env);
 	g_data.envp = data->env_p;
     g_data.default_in = dup(0);
@@ -396,8 +399,11 @@ int	main (int argc, char **argv, char **env)
 		ft_parse();
 		if (!(ft_strncmp(g_data.line, "\0", 1) == 0) && g_data.error_flag == 0)
 		{
-            ft_exec_rdr(&g_data.arg);
-            change_output_or_input();
+			if (g_data.arg->list_type != WORD)
+			{
+				ft_exec_rdr(&g_data.arg);
+				change_output_or_input();
+			}
 			if (ft_strcmp(g_data.arg->content[0], "exit") == 0) // exit
 			{
 				printf("\033[31mExiting minishell...\033[0m\n");

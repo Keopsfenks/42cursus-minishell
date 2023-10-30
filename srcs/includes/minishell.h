@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 13:01:47 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:37:10 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_newlst
 {
 	char			**content;
 	int				*type;
-	int				count;
+	int				list_type;
 	struct s_newlst	*next;
 }					t_newlst;
 
