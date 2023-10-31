@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 01:04:15 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 06:51:33 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:55:09 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,14 @@ int	env_control(char *str, int i)
 	return (i);
 }
 
-void	parse_error(int error_code)
+void	parse_error(int error_code, char *str)
 {
+	if (str != NULL)
+	{
+		dup2(2, 1);
+		printf("minishell: %s\n", str);
+		dup2(g_data.default_out, 1);
+	}
 	g_data.error_flag = -1;
 	g_data.error_code = error_code;
 }

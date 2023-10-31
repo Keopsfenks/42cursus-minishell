@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/30 23:13:36 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:33:12 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 				change_output_or_input();
 			} 
 			// if is builtin
-			if (tmp->content[0] != NULL)
+			if (tmp->content[0])
 				execve(data->path, tmp->content, data->env_p);
 			perror("Invalid command");
 			exit(1);
@@ -439,7 +439,8 @@ int	main (int argc, char **argv, char **env)
 				{
 					if (execve(data->path, g_data.arg->content, data->env_p) == -1)
 						perror("Invalid command");   
-					exit(1);
+					errno = 127;
+					exit(errno);
 				}
 				else
 					waitpid(pid, &g_data.error_code, 0);

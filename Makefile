@@ -11,7 +11,7 @@ SRCS = ./srcs/main.c \
 		./srcs/lexer/make_sense.c
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lreadline -g  -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -lreadline -g  #-fsanitize=address
 RM = rm -rf
 LIBFT = ./srcs/libary/libft/libft.a
 OBJS = $(SRCS:.c=.o)

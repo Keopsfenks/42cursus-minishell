@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 18:38:56 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 12:51:06 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:10:25 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ char	*env_find(char *path)
 	if (ft_strlen(path + 1) == 1)
 	{
 		if (path[1] == '?')
-			return (ft_itoa(g_data.error_code));
+		{
+			errno = g_data.error_code;
+			return (ft_itoa(errno / 256));
+		}
 	}
 	while (g_data.envp[++i])
 	{
