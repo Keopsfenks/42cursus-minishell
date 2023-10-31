@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 01:04:15 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/31 13:55:09 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:36:23 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ void	parse_error(int error_code, char *str)
 		dup2(g_data.default_out, 1);
 	}
 	g_data.error_flag = -1;
-	g_data.error_code = error_code;
+	g_data.error_code = error_code * 256;
 }
