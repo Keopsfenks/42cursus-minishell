@@ -1,5 +1,6 @@
 SRCS = ./srcs/main.c \
 		./srcs/heredoc.c \
+		./srcs/pipe.c \
 		./srcs/redirections.c \
 		./srcs/parser/parser_process.c \
 		./srcs/parser/parser_process2.c \
@@ -11,7 +12,7 @@ SRCS = ./srcs/main.c \
 		./srcs/lexer/make_sense.c
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lreadline -g  #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -lreadline -g
 RM = rm -rf
 LIBFT = ./srcs/libary/libft/libft.a
 OBJS = $(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/31 14:33:12 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 21:05:12 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,10 +288,9 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 			{
 				ft_exec_rdr(&tmp);
 				change_output_or_input();
-			} 
+			}
 			// if is builtin
-			if (tmp->content[0])
-				execve(data->path, tmp->content, data->env_p);
+			execve(data->path, tmp->content, data->env_p);
 			perror("Invalid command");
 			exit(1);
 		}
@@ -311,7 +310,7 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	total_pipe = total_exec - 1;
 	while (total_pipe >= 0)
 	{
-		waitpid(-1, NULL, 0);
+		waitpid(-1, &g_data.error_code, 0);
 		total_pipe--;
 	}
 	return ;
@@ -366,16 +365,16 @@ void	set_envp(t_exec *data, char **envp)
 
 void    change_output_or_input(void)
 {
-    if (g_data.fdout == 1)
-    {
-        dup2(g_data.out_fd, 1);
-        close(g_data.out_fd);
-    }
-    if (g_data.fdin == 1)
-    {
-        dup2(g_data.in_fd, 0);
-        close(g_data.in_fd);
-    }
+	if (g_data.fdout == 1)
+	{
+		dup2(g_data.out_fd, 1);
+		close(g_data.out_fd);
+	}
+	if (g_data.fdin == 1)
+	{
+		dup2(g_data.in_fd, 0);
+		close(g_data.in_fd);
+	}
 }
 
 int	main (int argc, char **argv, char **env)
@@ -390,10 +389,10 @@ int	main (int argc, char **argv, char **env)
 	data = malloc(sizeof(t_exec));
 	set_envp(data, env);
 	g_data.envp = data->env_p;
-    g_data.default_in = dup(0);
-    g_data.default_out = dup(1);
 	while (1)
 	{
+		g_data.default_in = dup(0);
+		g_data.default_out = dup(1);
  		g_data.line = readline("minishell$ ");
 		if (ft_strncmp(g_data.line, "", ft_strlen(g_data.line)) != 0) // add history
 			add_history(g_data.line);
@@ -414,7 +413,7 @@ int	main (int argc, char **argv, char **env)
 				exit(0);
 			}
 			else if (g_data.counter->pipe > 0)
-				ft_exec_w_pipes(data, g_data.arg->content);
+				exec_pipes(data);
 			else if (ft_strcmp(g_data.arg->content[0], "cd") == 0) // cd komutuna özel 
 			{
 				if (g_data.arg->content[1])
@@ -462,9 +461,9 @@ void	struct_initilaize(char **envp, int rule)
 	g_data.error_flag = 0;
 	g_data.quot = 0;
 	g_data.quot_type = 1000;
-    g_data.fdin = 0;
-    g_data.fdout = 0;
-    g_data.exec_check = 0;
-    dup2(g_data.default_in, 0);
-    dup2(g_data.default_out, 1);
+	g_data.fdin = 0;
+	g_data.fdout = 0;
+	g_data.exec_check = 0;
+	dup2(g_data.default_in, 0);
+	dup2(g_data.default_out, 1);
 }

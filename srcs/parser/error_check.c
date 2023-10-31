@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:50:02 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/31 14:28:25 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:12:08 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	pipe_check(t_arg *temp)
 {
 	if (temp->next == NULL)
+		return (parse_error(1, "syntax error near unexpected token '|'"), 1);
+	else if (ft_strcmp(temp->next->content, "|") == 0)
 		return (parse_error(1, "syntax error near unexpected token '|'"), 1);
 	return (0);
 }
@@ -33,6 +35,14 @@ int	rdr_check(t_arg *temp)
 		return (parse_error(258, "syntax error near unexpected token '<'"), 1);
 	else if (ft_strcmp(temp->content, "<>") == 0)
 		return (parse_error(258, "syntax error near unexpected token '>'"), 1);
+	else if (ft_strcmp(temp->content, "<><") == 0)
+		return (parse_error(258, "syntax error near unexpected token '<'"), 1);
+	else if (ft_strcmp(temp->content, "<>>") == 0)
+		return (parse_error(258, "syntax error near unexpected token '>'"), 1);
+	else if (ft_strcmp(temp->content, "><<") == 0)
+		return (parse_error(258, "syntax error near unexpected token '<'"), 1);
+	else if (ft_strcmp(temp->content, "><>") == 0)
+		return (parse_error(258, "syntax error near unexpected token '>'"), 1);
 	else if (temp->next == NULL)
 		return (parse_error(258 \
 			, "syntax error near unexpected token 'newline'"), 1);
@@ -44,8 +54,10 @@ int	error_check(t_arg *temp)
 	int	check;
 
 	check = 0;
-	if (g_data.quot == 1)
+	if (g_data.quot == 1 && g_data.quot_type == '\"')
 		return (parse_error(1, "syntax error near unexpected token '\"'"), 1);
+	if (g_data.quot == 1 && g_data.quot_type == '\'')
+		return (parse_error(1, "syntax error near unexpected token '\''"), 1);
 	if (temp == NULL)
 		return (parse_error(0, NULL), 1);
 	else if (ft_strlen(temp->content) < 1)

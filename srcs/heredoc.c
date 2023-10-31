@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 00:33:47 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 04:49:06 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:24:51 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,4 @@ void	double_input_rdr(t_newlst *tmp, int i)
 	g_data.fdin = 1;
 	close(fd[1]);
 }
+// cat << a | cat << b

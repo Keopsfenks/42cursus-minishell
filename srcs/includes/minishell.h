@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/31 13:52:49 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:36:20 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 # include <string.h>
 # include <stdbool.h>
 
-enum	character {
+enum	e_character {
 	WORD,
-    INPUT_RDR,
-    OUTPUT_RDR,
-    DOUBLE_OUTPUT_RDR,
-    DOUBLE_INPUT_RDR,
-    PIPE,
+	INPUT_RDR,
+	OUTPUT_RDR,
+	DOUBLE_OUTPUT_RDR,
+	DOUBLE_INPUT_RDR,
+	PIPE,
 };
 typedef struct s_counter
 {
@@ -62,7 +62,7 @@ typedef struct s_newlst
 typedef struct s_exec
 {
 	char	**env_p;
-	char 	*path;
+	char	*path;
 }	t_exec;
 
 typedef struct s_data
@@ -78,15 +78,15 @@ typedef struct s_data
 	int			error_code;
 	int			quot;
 	int			fd[2];
-    int         in_fd;
-    int         out_fd;
-    int         fdin;
-    int         fdout;
+    int			in_fd;
+    int			out_fd;
+    int			fdin;
+    int			fdout;
 	int			tmp;
 	int			quot_type;
-    int         default_in;
-    int         default_out;
-    int         exec_check;
+    int			default_in;
+    int			default_out;
+    int			exec_check;
 }				t_data;
 
 t_data	g_data;
@@ -116,7 +116,8 @@ void	ft_exec_rdr(t_newlst **list);
 char	*ft_join_m(t_exec *data, char **commands);
 void	free_commands(char **commands);
 void	double_input_rdr(t_newlst *tmp, int i);
-int	    ft_strcmp(char *s1, char *s2);
-void    change_output_or_input(void);
+int		ft_strcmp(char *s1, char *s2);
+void	change_output_or_input(void);
+void	exec_pipes(t_exec *data);
 
 #endif

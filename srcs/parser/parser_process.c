@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/31 14:30:38 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:48:42 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	type_counter(t_arg	**lst)
 	g_data.counter = ft_calloc(sizeof(t_counter), 1);
 	while (list != NULL)
 	{
-		if (list->type == INPUT_RDR || list->type == OUTPUT_RDR
+		if (list->type == INPUT_RDR || list->type == OUTPUT_RDR \
 				|| list->type == DOUBLE_OUTPUT_RDR)
 			g_data.counter->rdr++;
 		else if (list->type == WORD)
@@ -168,7 +168,10 @@ void	ft_parse(void)
 	make_sense(&temp);
 	type_counter(&temp);
 	if (error_check(temp) == 1)
+	{
+		freelizer(&temp, NULL);
 		return ;
+	}
 	struct_initilaize(NULL, 0);
 	find_env_name(temp);
 	change_list(temp);
