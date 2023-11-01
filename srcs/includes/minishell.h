@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/31 20:36:20 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/01 05:49:01 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 # include "../libary/libft/libft.h"
 # include <unistd.h>
-# include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -27,15 +27,17 @@
 # include <stdarg.h>
 # include <string.h>
 # include <stdbool.h>
+# include <termios.h>
 
-enum	e_character {
+enum	character {
 	WORD,
-	INPUT_RDR,
-	OUTPUT_RDR,
-	DOUBLE_OUTPUT_RDR,
-	DOUBLE_INPUT_RDR,
-	PIPE,
+    INPUT_RDR,
+    OUTPUT_RDR,
+    DOUBLE_OUTPUT_RDR,
+    DOUBLE_INPUT_RDR,
+    PIPE,
 };
+
 typedef struct s_counter
 {
 	int	rdr;
@@ -62,7 +64,8 @@ typedef struct s_newlst
 typedef struct s_exec
 {
 	char	**env_p;
-	char	*path;
+	char 	*path;
+	t_list	*t_exp;
 }	t_exec;
 
 typedef struct s_data
@@ -74,19 +77,24 @@ typedef struct s_data
 	char		**envp;
 	char		*path;
 	char		**redirection;
+	char		**t_export;
 	int			error_flag;
 	int			error_code;
 	int			quot;
 	int			fd[2];
-    int			in_fd;
-    int			out_fd;
-    int			fdin;
-    int			fdout;
+    int         in_fd;
+    int         out_fd;
+	int			in_rdr;
+    int         fdin;
+    int         fdout;
 	int			tmp;
 	int			quot_type;
-    int			default_in;
-    int			default_out;
-    int			exec_check;
+	int			err_ty;
+    int         default_in;
+    int         default_out;
+    int         exec_check;
+	int			dollars_error;
+	char		*parse_str;
 }				t_data;
 
 t_data	g_data;
@@ -98,10 +106,12 @@ void	struct_initilaize(char **envp, int rule);
 bool	env_check(char const *str, char c, int rule);
 char	*env_find(char *path);
 void	check_quot_list(t_newlst **temp);
+int		is_built_in(t_exec *data, char **content);
 char	*env_add_dollars(char *str, char *path);
 int		env_control(char *str, int i);
 void	ft_error(char *str);
 void	change_list(t_arg *temp);
+int		find_env_dir(char **env_p, char *find);
 void	find_env_name(t_arg *temp);
 void	parse_error(int error_code, char *str);
 int		is_oparators(char *str, int i, int oparator, int rule);
@@ -118,6 +128,6 @@ void	free_commands(char **commands);
 void	double_input_rdr(t_newlst *tmp, int i);
 int		ft_strcmp(char *s1, char *s2);
 void	change_output_or_input(void);
-void	exec_pipes(t_exec *data);
+void	splitting_to_add_list(t_arg *temp, char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/10/31 21:05:12 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/01 05:57:45 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ void	free_commands(char **commands) // bu komut char ** lari kolayca freeleyip l
 	free(commands);
 }
 
-// TODO 2: x
-// builtin fonksiyonları yazılacak, ayırılacak
-// cd komutunun tek "cd" argümanında home dizini
-// todo:
-// export unset pipes redirections parser
-
 char	*find_access(t_exec *data, char *input) // bu fonksiyon gelen envp PATH= den itibaren gelen inputun örnek "ls" inputunun path'te hangi bölgede oldugunu döndürür.
 {
 	char	**env_path;
@@ -95,16 +89,51 @@ char	*find_access(t_exec *data, char *input) // bu fonksiyon gelen envp PATH= de
 void	ft_echo(char **commands)
 {
 	int	i;
+	int j;
+	int b_check = 2;
+	int n_added = 0;
 
 	i = 1;
-	if (commands[1] && !ft_strcmp(commands[1], "-n"))
+	j = 0;
+	if (commands[1] && !ft_strncmp(commands[1], "-n", 2))
+	{
+		j = 2;
+		while(commands[1][j])
+		{
+			if (commands[1][j] != 'n')
+				b_check = 0;
+			j++;
+		}
+		b_check = 1;
+	}
+	if (commands[1] && b_check == 1)
 	{
 		i++;
 		while (commands[i])
 		{
-			printf("%s", commands[i]);
-			if (commands[i + 1])
-				printf(" ");
+			if (!ft_strncmp(commands[i], "-n", 2) && !n_added)
+			{
+				j = 2;
+				while (commands[i][j])
+				{
+					if (commands[i][j] != 'n')
+					{
+						printf("%s", commands[i]);
+						if (commands[i + 1])
+							printf(" ");
+						n_added = 1;
+						break ;
+					}
+					else
+						break ;
+				}
+			}
+			else
+			{
+				printf("%s", commands[i]);
+				if (commands[i + 1])
+					printf(" ");
+			}
 			i++;
 		}
 	}
@@ -119,9 +148,10 @@ void	ft_echo(char **commands)
 		}
 		printf("\n");
 	}
+	g_data.error_code = 0;
 }
 
-void	ft_pwd(char **commands, t_exec *data)
+void	ft_pwd(t_exec *data)
 {
 	char	*t_pwd;
 
@@ -129,11 +159,10 @@ void	ft_pwd(char **commands, t_exec *data)
 	t_pwd = malloc(sizeof(char) * 1024);
 	if (!getcwd(t_pwd, 1024))
 		perror("error");
-	if (commands[1])
-		printf("pwd: too many arguments\n");
 	else
 		printf("%s\n", t_pwd);
 	free(t_pwd);
+	g_data.error_code = 0;
 }
 
 char	*ft_join_m(t_exec *data, char **commands)
@@ -154,26 +183,53 @@ char	*ft_join_m(t_exec *data, char **commands)
 int	ft_change_dir(t_exec *data, char *token)
 {
 	char	*t_pwd;
+	int		i_pwd;
 	char	*new_pwd;
 	char	*old_pwd;
 
 	t_pwd = malloc(sizeof(char) * 1024);
 	if (chdir(token) == -1)
+	{
+		free(t_pwd);
 		return (-1);
+	}
 	else
 	{
 		if (!getcwd(t_pwd, 1024))
 			perror("error");
 		else
 		{
+			i_pwd = find_env_dir(data->env_p, "PWD");
 			new_pwd = ft_strjoin("PWD=", t_pwd);
-			old_pwd = ft_strjoin("OLD", data->env_p[find_env_dir(data->env_p, "PWD")]);
-			data->env_p[find_env_dir(data->env_p, "PWD")] = new_pwd;
-			data->env_p[find_env_dir(data->env_p, "OLDPWD")] = old_pwd;
+			if (i_pwd == -1)
+				old_pwd = ft_strjoin("OLDPWD=", " ");
+			else
+				old_pwd = ft_strjoin("OLDPWD=", data->env_p[i_pwd] + 4);
+			if (i_pwd != -1)
+				ft_strlcpy(data->env_p[i_pwd], new_pwd, ft_strlen(new_pwd) + 1);
+			ft_strlcpy(data->env_p[find_env_dir(data->env_p, "OLDPWD")], old_pwd, ft_strlen(old_pwd) + 1);
+			free(new_pwd);
+			free(old_pwd);
 		}
 	}
 	free(t_pwd);
 	return (0);
+}
+
+int		check_is_dir(char *str)
+{
+	int i;
+	int res;
+
+	i = 0;
+	res = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			res = 1;
+		i++;
+	}
+	return (res);
 }
 
 void	ft_set_export(t_exec *data, char *export)
@@ -194,7 +250,7 @@ char	*ft_f_command(char *command)
 	int i;
 
 	i = 0;
-	while ((command[i] >= 'A' && command[i] <= 'Z') || (command[i] >= 'a' && command[i] <= 'z')) // kücük A kücük Z 
+	while ((command[i] >= 'A' && command[i] <= 'Z') || (command[i] >= 'a' && command[i] <= 'z'))
 		i++;
 	if (command[i] == '=')
 	{
@@ -207,6 +263,18 @@ char	*ft_f_command(char *command)
 	
 }
 
+void	ft_p_env_ex(t_exec *data)
+{
+	int i;
+
+	i = 0;
+	while (data->env_p[i])
+	{
+		printf("declare -x %s\n", data->env_p[i]);
+		i++;
+	}
+}
+
 int	ft_export(t_exec *data, char **commands)
 {
 	int x;
@@ -215,16 +283,19 @@ int	ft_export(t_exec *data, char **commands)
 
 	x = 1;
 	j = 0;
+	if (!commands[1])
+		ft_p_env_ex(data);
 	while (commands[x])
 	{
 		command_w_eq = ft_f_command(commands[x]);
 		if (commands[x][0] >= '0' && commands[x][0] <= '9')
 		{
 			printf("export: not an identifier: %s\n", commands[x]);
+			g_data.error_code = 256;
 			return (-1);
 		}
 		j = 0;
-		if (find_env_dir(data->env_p, command_w_eq) != -1) // cheak memory leaks
+		if (find_env_dir(data->env_p, command_w_eq) != -1)
 			ft_strlcpy(data->env_p[find_env_dir(data->env_p, command_w_eq)], commands[x], ft_strlen(commands[x]) + 1);
 		else
 		{
@@ -247,6 +318,26 @@ int	ft_export(t_exec *data, char **commands)
 	return (-1);
 }
 
+void handle_signals(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n",1);
+		if (g_data.in_rdr == 2)
+			exit(1);
+		g_data.error_code = 1;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (signum == SIGQUIT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		return;
+	}
+}
+
 void	ft_p_env(t_exec *data)
 {
 	int i;
@@ -257,6 +348,7 @@ void	ft_p_env(t_exec *data)
 		printf("%s\n",data->env_p[i]);
 		i++;
 	}
+	g_data.error_code = 0;
 }
 
 void	ft_exec_w_pipes(t_exec *data, char **commands)
@@ -278,21 +370,29 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 		pid = fork();
 		if (!pid)
 		{
-			data->path = ft_join_m(data, tmp->content);
+			if (check_is_dir(tmp->content[0]) == 1)
+				g_data.err_ty = 1;
+			if (access(tmp->content[0], F_OK) != 0)
+				data->path = ft_join_m(data, tmp->content);
+			else
+				data->path = ft_strdup(tmp->content[0]);
 			dup2(in, 0);
 			if (total_pipe - 1 != -1)
 				dup2(g_data.fd[1], 1);
 			close(g_data.fd[0]);
 			close(g_data.fd[1]);
-			if (tmp->list_type != WORD)
+			if (tmp->content[0] && is_built_in(data, tmp->content) != 1)
 			{
-				ft_exec_rdr(&tmp);
-				change_output_or_input();
+				if (execve(data->path, tmp->content, data->env_p) == -1)
+				{
+					errno = 127;
+					if (g_data.err_ty == 0)
+						printf("command not found: %s\n", tmp->content[0]);
+					else if (g_data.err_ty == 1)
+						printf("No such file or directory: %s\n", tmp->content[0]);
+				}
 			}
-			// if is builtin
-			execve(data->path, tmp->content, data->env_p);
-			perror("Invalid command");
-			exit(1);
+			exit(errno);
 		}
 		else
 		{
@@ -310,7 +410,7 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 	total_pipe = total_exec - 1;
 	while (total_pipe >= 0)
 	{
-		waitpid(-1, &g_data.error_code, 0);
+		waitpid(-1, NULL, 0);
 		total_pipe--;
 	}
 	return ;
@@ -365,16 +465,103 @@ void	set_envp(t_exec *data, char **envp)
 
 void    change_output_or_input(void)
 {
-	if (g_data.fdout == 1)
+    if (g_data.fdout == 1)
+    {
+        dup2(g_data.fd[1], 1);
+        close(g_data.fd[1]);
+    }
+    if (g_data.fdin == 1)
+    {
+        dup2(g_data.fd[0], 0);
+        close(g_data.fd[0]);
+    }
+}
+
+static void	delete_hat(void)
+{
+	struct termios	termios_p;
+
+	if (tcgetattr(0, &termios_p) != 0)
+		perror("Minishell: tcgetattr");
+	termios_p.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(0, 0, &termios_p) != 0)
+		perror("Minishell: tcsetattr");
+}
+
+int		is_built_in(t_exec *data, char **content)
+{
+	int	result;
+	char *tmp;
+
+	result = 0;
+	tmp = NULL;
+	if (ft_strcmp(content[0], "exit") == 0) // exit
 	{
-		dup2(g_data.out_fd, 1);
-		close(g_data.out_fd);
+		if (!(g_data.counter->pipe > 0))
+		{
+			printf("\033[31mExiting minishell...\033[0m\n");
+			int b = 0;
+			if (content[1])
+			{
+				b = ft_atoi(content[1]);
+				if (b < 0)
+					b = -b;
+			}
+			if (b != 0)
+				exit(b);
+			exit(0);
+		}
+		result = 1;
 	}
-	if (g_data.fdin == 1)
+	else if (ft_strcmp(content[0], "cd") == 0) // cd komutuna özel 
 	{
-		dup2(g_data.in_fd, 0);
-		close(g_data.in_fd);
+		if (content[1])
+		{
+			if (!ft_strcmp(content[1], "~"))
+			{
+				tmp = ft_strjoin(g_data.envp[find_env_dir(g_data.envp, "HOME")] + 5, "/");
+				if (ft_change_dir(data, tmp) == -1)
+					printf("HOME not set %s\n", content[0]);
+				free(tmp);
+			}
+			else if (ft_change_dir(data, content[1]) == -1)
+				printf("\033[31mcd: no such file or directory: %s\033[0m\n", content[1]);
+		}
+		else if (!content[1])
+		{
+			tmp = ft_strjoin(g_data.envp[find_env_dir(g_data.envp, "HOME")] + 5, "/");
+			if (ft_change_dir(data, tmp) == -1)
+				printf("HOME not set %s\n", content[0]);
+			free(tmp);
+		}
+		result = 1;
 	}
+	else if (!(ft_strcmp(content[0], "echo")))
+	{
+		ft_echo(content);
+		result = 1;
+	}
+	else if (!(ft_strcmp(content[0], "pwd"))) // pwd
+	{
+		ft_pwd(data);
+		result = 1;
+	}
+	else if (!(ft_strcmp(content[0], "export")))
+	{
+		ft_export(data, content);
+		result = 1;
+	}
+	else if (!(ft_strcmp(content[0], "unset")))
+	{
+		result = 1;
+		ft_unset(data, content);
+	}
+	else if (!(ft_strcmp(content[0], "env")))
+	{
+		ft_p_env(data);
+		result = 1;
+	}
+	return (result);
 }
 
 int	main (int argc, char **argv, char **env)
@@ -387,13 +574,22 @@ int	main (int argc, char **argv, char **env)
 	
 	struct_initilaize(NULL, 1);
 	data = malloc(sizeof(t_exec));
+	data->t_exp = malloc(sizeof(t_list));
 	set_envp(data, env);
 	g_data.envp = data->env_p;
+    g_data.default_in = dup(0);
+    g_data.default_out = dup(1);
+	delete_hat();
+	signal(SIGINT, &handle_signals);
+	signal(SIGQUIT, &handle_signals);
 	while (1)
 	{
-		g_data.default_in = dup(0);
-		g_data.default_out = dup(1);
- 		g_data.line = readline("minishell$ ");
+		g_data.line = readline("\033[34mminishell \033[0;35m$ \033[0m");
+		if (!g_data.line)
+		{
+			write(1, "exit", 4);
+			exit(0);
+		}
 		if (ft_strncmp(g_data.line, "", ft_strlen(g_data.line)) != 0) // add history
 			add_history(g_data.line);
 		ft_parse();
@@ -404,41 +600,32 @@ int	main (int argc, char **argv, char **env)
 				ft_exec_rdr(&g_data.arg);
 				change_output_or_input();
 			}
-			if (ft_strcmp(g_data.arg->content[0], "exit") == 0) // exit
+			if (g_data.in_rdr == 1)
 			{
-				printf("\033[31mExiting minishell...\033[0m\n");
-				free_commands(g_data.arg->content);
-				free(g_data.line);
-				free(data);
-				exit(0);
+				g_data.in_rdr = 0;
+				continue ;
 			}
-			else if (g_data.counter->pipe > 0)
-				exec_pipes(data);
-			else if (ft_strcmp(g_data.arg->content[0], "cd") == 0) // cd komutuna özel 
+			if (g_data.counter->pipe > 0)
+				ft_exec_w_pipes(data, g_data.arg->content);
+			else if (g_data.arg->content[0] && is_built_in(data, g_data.arg->content) != 1)
 			{
-				if (g_data.arg->content[1])
-					if (ft_change_dir(data, g_data.arg->content[1]) == -1)
-						printf("\033[31mcd: no such file or directory: %s\033[0m\n", g_data.arg->content[1]);
-			}
-			else if (!(ft_strcmp(g_data.arg->content[0], "echo")))
-				ft_echo(g_data.arg->content);
-			else if (!(ft_strcmp(g_data.arg->content[0], "pwd"))) // pwd
-				ft_pwd(g_data.arg->content, data);
-			else if (!(ft_strcmp(g_data.arg->content[0], "export")))
-				ft_export(data, g_data.arg->content);
-			else if (!(ft_strcmp(g_data.arg->content[0], "unset")))
-				ft_unset(data, g_data.arg->content);
-			else if (!(ft_strcmp(g_data.arg->content[0], "env")))
-				ft_p_env(data);
-			else if (g_data.arg->content[0])
-			{
-				data->path = ft_join_m(data, g_data.arg->content);
+				if (check_is_dir(g_data.arg->content[0]) == 1)
+					g_data.err_ty = 1;
+				if (access(g_data.arg->content[0], F_OK) != 0)
+					data->path = ft_join_m(data, g_data.arg->content);
+				else
+					data->path = ft_strdup(g_data.arg->content[0]);
 				pid = fork();
 				if (pid == 0)
 				{
 					if (execve(data->path, g_data.arg->content, data->env_p) == -1)
-						perror("Invalid command");   
-					errno = 127;
+					{
+						errno = 127;
+						if (g_data.err_ty == 0)
+							printf("command not found: %s\n", g_data.arg->content[0]);
+						else if (g_data.err_ty == 1)
+							printf("No such file or directory: %s\n", g_data.arg->content[0]);
+					}
 					exit(errno);
 				}
 				else
@@ -460,10 +647,12 @@ void	struct_initilaize(char **envp, int rule)
 		g_data.error_code = 0;
 	g_data.error_flag = 0;
 	g_data.quot = 0;
+	g_data.in_rdr = 0;
 	g_data.quot_type = 1000;
-	g_data.fdin = 0;
-	g_data.fdout = 0;
-	g_data.exec_check = 0;
-	dup2(g_data.default_in, 0);
-	dup2(g_data.default_out, 1);
+    g_data.fdin = 0;
+    g_data.fdout = 0;
+	g_data.err_ty = 0;
+    g_data.exec_check = 0;
+    dup2(g_data.default_in, 0);
+    dup2(g_data.default_out, 1);
 }

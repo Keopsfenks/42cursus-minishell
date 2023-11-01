@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:10:55 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/10/30 15:59:28 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/01 05:53:19 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void    output_rdr(t_newlst *list, int i)
 {
-	g_data.out_fd = open(list->content[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	g_data.fd[1] = open(list->content[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	g_data.fdout = 1;
 }
 
 void    double_output_rdr(t_newlst *list, int i)
 {
-	g_data.out_fd = open(list->content[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
+	g_data.fd[1] = open(list->content[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	g_data.fdout = 1;
 }
 
 void    input_rdr(t_newlst *list, int i)
 {
-	g_data.in_fd = open(list->content[i + 1], O_RDONLY, 0644);
+	g_data.fd[0] = open(list->content[i + 1], O_RDONLY, 0644);
 	g_data.fdin = 1;
 }
 
@@ -80,7 +80,7 @@ char	**change_newlst(t_newlst *tmp, int count, int check)
 	return (free_commands(tmp->content), new_str);
 }
 
-void    select_rdr_type(t_newlst *tmp, int i)
+void	select_rdr_type(t_newlst *tmp, int i)
 { 
 	if (tmp->type[i] == OUTPUT_RDR)
 		output_rdr(tmp, i);
