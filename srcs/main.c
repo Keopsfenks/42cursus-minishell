@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 03:56:43 by ogenc             #+#    #+#             */
-/*   Updated: 2023/11/01 05:57:45 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/02 03:42:46 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,6 +366,8 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 
 	while (total_pipe >= 0)
 	{
+		if (tmp->list_type != WORD)
+			ft_exec_rdr(&tmp);
 		pipe(g_data.fd);
 		pid = fork();
 		if (!pid)
@@ -377,7 +379,13 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 			else
 				data->path = ft_strdup(tmp->content[0]);
 			dup2(in, 0);
-			if (total_pipe - 1 != -1)
+			if (g_data.fdout == 1)
+			{
+				g_data.fd[1] = dup(g_data.out_fd);
+				close(g_data.out_fd);
+				g_data.fdout = 0;	
+			}
+			if (total_pipe - 1 != -1 || g_data.fdout == 1)
 				dup2(g_data.fd[1], 1);
 			close(g_data.fd[0]);
 			close(g_data.fd[1]);
@@ -398,7 +406,13 @@ void	ft_exec_w_pipes(t_exec *data, char **commands)
 		{
 			if (in != 0)
 				close(in);
-			if (total_pipe != 0)
+			if (g_data.fdin == 1)
+			{
+				in = dup(g_data.in_fd);
+				close(g_data.in_fd);
+				g_data.fdin = 0;
+			}
+			else if (total_pipe != 0)
 				in = dup(g_data.fd[0]);
 			close(g_data.fd[1]);
 			close(g_data.fd[0]);
@@ -467,13 +481,13 @@ void    change_output_or_input(void)
 {
     if (g_data.fdout == 1)
     {
-        dup2(g_data.fd[1], 1);
-        close(g_data.fd[1]);
+        dup2(g_data.out_fd, 1);
+        close(g_data.out_fd);
     }
     if (g_data.fdin == 1)
     {
-        dup2(g_data.fd[0], 0);
-        close(g_data.fd[0]);
+        dup2(g_data.in_fd, 0);
+        close(g_data.in_fd);
     }
 }
 
@@ -563,7 +577,6 @@ int		is_built_in(t_exec *data, char **content)
 	}
 	return (result);
 }
-
 int	main (int argc, char **argv, char **env)
 {
 	int		pid;

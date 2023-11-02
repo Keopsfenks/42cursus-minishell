@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/11/01 05:49:01 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/02 03:11:18 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
     int         exec_check;
 	int			dollars_error;
 	char		*parse_str;
+	char		*input_name;
 }				t_data;
 
 t_data	g_data;
@@ -129,5 +130,4 @@ void	double_input_rdr(t_newlst *tmp, int i);
 int		ft_strcmp(char *s1, char *s2);
 void	change_output_or_input(void);
 void	splitting_to_add_list(t_arg *temp, char *str);
-
 #endif
