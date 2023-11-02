@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/11/02 23:54:48 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/03 01:43:25 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@
 
 enum	character {
 	WORD,
-    INPUT_RDR,
-    OUTPUT_RDR,
-    DOUBLE_OUTPUT_RDR,
-    DOUBLE_INPUT_RDR,
-    PIPE,
+	INPUT_RDR,
+	OUTPUT_RDR,
+	DOUBLE_OUTPUT_RDR,
+	DOUBLE_INPUT_RDR,
+	PIPE,
 };
 
 typedef struct s_counter
@@ -138,6 +138,12 @@ int		ft_strcmp(char *s1, char *s2);
 void	change_output_or_input(void);
 void	splitting_to_add_list(t_arg *temp, char *str);
 int		ms_lstsize(t_arg *lst);
+char	**change_newlst(t_newlst *tmp, int count, int check);
+void	change_newlst_rdr_not_start(t_newlst *tmp \
+	, char ***new_str, int lenght, int count);
+void	change_newlst_rdr_start(t_newlst *tmp \
+	, char ***new_str, int count);
+int	last_rdr_check(t_newlst *tmp, int i, int check);
 
 // exec part
 

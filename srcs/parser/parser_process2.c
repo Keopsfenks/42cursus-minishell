@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 01:19:36 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/11/03 00:14:11 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/03 01:46:37 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	splitting_to_add_list(t_arg *temp, char *str)
 	if (!(*str))
 	{
 		free(str);
-		return;
+		return ;
 	}
 	while (str[++i] != '\0')
 	{
