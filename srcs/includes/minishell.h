@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/11/02 03:11:18 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:54:48 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
+# include <sys/ioctl.h>
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -64,8 +65,12 @@ typedef struct s_newlst
 typedef struct s_exec
 {
 	char	**env_p;
-	char 	*path;
+	char	*path;
+	char	*new_pwd;
+	char	*old_pwd;
+	int		res;
 	t_list	*t_exp;
+	
 }	t_exec;
 
 typedef struct s_data
@@ -73,29 +78,30 @@ typedef struct s_data
 	t_counter	*counter;
 	t_arg		*list;
 	t_newlst	*arg;
+	t_arg		*exp_p;
 	char		*line;
 	char		**envp;
 	char		*path;
 	char		**redirection;
-	char		**t_export;
 	int			error_flag;
 	int			error_code;
 	int			quot;
 	int			fd[2];
-    int         in_fd;
-    int         out_fd;
+	int			in_fd;
+	int			out_fd;
 	int			in_rdr;
-    int         fdin;
-    int         fdout;
+	int			fdin;
+	int			fdout;
 	int			tmp;
 	int			quot_type;
 	int			err_ty;
-    int         default_in;
-    int         default_out;
-    int         exec_check;
+	int			default_in;
+	int			default_out;
+	int			exec_check;
 	int			dollars_error;
 	char		*parse_str;
 	char		*input_name;
+	int			env_size;
 }				t_data;
 
 t_data	g_data;
@@ -108,7 +114,8 @@ bool	env_check(char const *str, char c, int rule);
 char	*env_find(char *path);
 void	check_quot_list(t_newlst **temp);
 int		is_built_in(t_exec *data, char **content);
-char	*env_add_dollars(char *str, char *path);
+char	*env_add_dollars(char *str, char *path, int check);
+char	*env_add_dollars3(char *str, char *tmp_path, char *path, int i);
 int		env_control(char *str, int i);
 void	ft_error(char *str);
 void	change_list(t_arg *temp);
@@ -130,4 +137,37 @@ void	double_input_rdr(t_newlst *tmp, int i);
 int		ft_strcmp(char *s1, char *s2);
 void	change_output_or_input(void);
 void	splitting_to_add_list(t_arg *temp, char *str);
+int		ms_lstsize(t_arg *lst);
+
+// exec part
+
+void	ft_cd(t_exec *data,	char **content);
+int		is_built_in(t_exec *data, char **content);
+void	ft_pwd(t_exec *data);
+void	ft_echo(char **commands);
+void	ft_unset(t_exec *data, char **commands);
+void	ft_p_env_ex(t_exec *data);
+void	ft_p_env(t_exec *data);
+int		ft_export(t_exec *data, char **commands);
+int		ft_change_dir(t_exec *data, char *token);
+void	ft_exit(t_exec *data, char **content);
+void	ft_set_export(t_exec *data, char *export, int j);
+int		ft_change_dir(t_exec *data, char *token);
+int		find_env_dir(char **env_p, char *find);
+void	ft_exc_chdir(t_exec *data, int i_pwd);
+int		check_is_dir(char *str);
+void	ft_p_env_ex(t_exec *data);
+void	handle_signals(int signum);
+int		ft_export(t_exec *data, char **commands);
+char	*find_access(t_exec *data, char *input);
+void	set_envp(t_exec *data, char **envp);
+char	*ft_f_command(char *command);
+void	ft_readline(t_exec *data);
+void	ft_exec_w_pipes(t_exec *data, char **commands);
+char	**reallaction_envp(t_exec *data);
+int		find_env_dir2(t_arg *expath, char *find);
+void	change_exp_content(t_arg *expath, int type, char *commands);
+void	ft_unset2(char **content);
+
+
 #endif
