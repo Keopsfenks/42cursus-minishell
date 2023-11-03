@@ -6,7 +6,7 @@
 /*   By: segurbuz <segurbuz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:28:25 by segurbuz          #+#    #+#             */
-/*   Updated: 2023/11/03 01:43:25 by segurbuz         ###   ########.fr       */
+/*   Updated: 2023/11/03 02:57:58 by segurbuz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_exec
 	char	*old_pwd;
 	int		res;
 	t_list	*t_exp;
-	
+
 }	t_exec;
 
 typedef struct s_data
@@ -89,7 +89,10 @@ typedef struct s_data
 	int			fd[2];
 	int			in_fd;
 	int			out_fd;
+	int			x;
 	int			in_rdr;
+	int			b_check;
+	int			n_added;
 	int			fdin;
 	int			fdout;
 	int			tmp;
@@ -101,10 +104,11 @@ typedef struct s_data
 	int			dollars_error;
 	char		*parse_str;
 	char		*input_name;
-	int			env_size;
 }				t_data;
 
 t_data	g_data;
+
+// parser part
 
 void	ft_parse(void);
 void	freelizer(t_arg **line, t_newlst **line2);
@@ -147,12 +151,21 @@ int	last_rdr_check(t_newlst *tmp, int i, int check);
 
 // exec part
 
+int		is_built_in(t_exec *data, char **content);
+char	*ft_join_m(t_exec *data, char **commands);
+int		find_env_dir(char **env_p, char *find);
+void	free_commands(char **commands);
+void	ft_exec_w_pipes(t_exec *data);
 void	ft_cd(t_exec *data,	char **content);
 int		is_built_in(t_exec *data, char **content);
 void	ft_pwd(t_exec *data);
 void	ft_echo(char **commands);
 void	ft_unset(t_exec *data, char **commands);
+void	ft_unset2(char **commands);
 void	ft_p_env_ex(t_exec *data);
+void	ft_check_f(t_exec *data);
+int		ft_echo_2(char **commands, int i);
+void	ft_exec_rdr(t_newlst **list);
 void	ft_p_env(t_exec *data);
 int		ft_export(t_exec *data, char **commands);
 int		ft_change_dir(t_exec *data, char *token);
@@ -163,17 +176,19 @@ int		find_env_dir(char **env_p, char *find);
 void	ft_exc_chdir(t_exec *data, int i_pwd);
 int		check_is_dir(char *str);
 void	ft_p_env_ex(t_exec *data);
+void	change_output_or_input(void);
 void	handle_signals(int signum);
+void	ft_execute(t_exec *data, t_newlst *tmp);
 int		ft_export(t_exec *data, char **commands);
+void	delete_hat(void);
 char	*find_access(t_exec *data, char *input);
+int		ft_sig_rdr_h(void);
 void	set_envp(t_exec *data, char **envp);
 char	*ft_f_command(char *command);
 void	ft_readline(t_exec *data);
-void	ft_exec_w_pipes(t_exec *data, char **commands);
-char	**reallaction_envp(t_exec *data);
+void	init_signals(void);
 int		find_env_dir2(t_arg *expath, char *find);
 void	change_exp_content(t_arg *expath, int type, char *commands);
 void	ft_unset2(char **content);
-
 
 #endif
